@@ -23,7 +23,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  *
  * @author DELL
@@ -61,11 +61,14 @@ public class Thuoc implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @JsonIgnore
     @OneToMany(mappedBy = "thuocId")
     private List<DonthuocDetails> donthuocDetailsList;
     @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
+    
     @ManyToOne
     private Typethuoc typethuocId;
+    @JsonIgnore
     @OneToMany(mappedBy = "thuocId")
     private List<ToathuocDetails> toathuocDetailsList;
 
