@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -40,8 +41,10 @@ public class TypeDoctor implements Serializable {
     private Integer id;
     @Column(name = "name")
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "typeDoctorId")
     private List<Doctor> doctorList;
+    @JsonIgnore
     @OneToMany(mappedBy = "typeDoctorId")
     private List<Taophieukham> taophieukhamList;
 
