@@ -18,37 +18,60 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/casher")
 public class CasherController {
-    
+
     @Autowired
-    CasherService Cservice;
-    
+    CasherService casherService;
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<Casher> listCasher() {
-        return Cservice.findAll();
+        return casherService.findAll();
     }
-    
+
     @GetMapping("/{id}")
-    public Object getCasher(@PathVariable String id) {
-        return null;
+    public ResponseEntity<Casher> getCasher(@PathVariable Integer id) {
+        Casher casher = casherService.getCasherById(id);
+        if (casher != null) {
+            return new ResponseEntity<>(casher, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCasher(@RequestBody Casher casher) {
-        Cservice.addCasher(casher);
+    public ResponseEntity<Casher> addCasher(@RequestBody Casher casher) {
+        casherService.addCasher(casher);
+        return new ResponseEntity<>(casher, HttpStatus.CREATED);
     }
-    
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
+    public ResponseEntity<Casher> updateCasher(@PathVariable Integer id, @RequestBody Casher updatedCasher) {
+        Casher casher = casherService.getCasherById(id);
+        if (casher != null) {
+            updatedCasher.setId(id);
+            Casher updated = casherService.updateCasher(updatedCasher);
+            if (updated != null) {
+                return new ResponseEntity<>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCasher(@PathVariable Integer id) {
-        Cservice.deleteCasher(id);
+    public ResponseEntity<?> deleteCasher(@PathVariable Integer id) {
+        Casher casher = casherService.getCasherById(id);
+        if (casher != null) {
+            casherService.deleteCasher(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    
 }
+
