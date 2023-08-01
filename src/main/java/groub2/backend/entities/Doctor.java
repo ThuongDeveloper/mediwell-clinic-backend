@@ -5,6 +5,7 @@
 package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author DELL
  */
+
 @Entity
 @Table(name = "doctor")
 @XmlRootElement
@@ -71,7 +73,7 @@ public class Doctor implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "doctorId")
     private List<Lichlamviec> lichlamviecList;
-    @JsonIgnore
+
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
