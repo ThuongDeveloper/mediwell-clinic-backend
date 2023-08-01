@@ -4,9 +4,12 @@
  */
 package groub2.backend.controller;
 
+import groub2.backend.dto.ThuocDAO;
 import groub2.backend.entities.Thuoc;
 import groub2.backend.entities.Typethuoc;
 import groub2.backend.res.ThuocRepository;
+import groub2.backend.res.TypethuocRepository;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ public class ThuocController {
 
     @Autowired
     private ThuocRepository thuocRepository;
+    private TypethuocRepository typethuocRepository;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -27,11 +31,33 @@ public class ThuocController {
         return thuocRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Thuoc> createThuoc(@RequestBody Thuoc thuoc) {
-        Thuoc createdThuoc = thuocRepository.save(thuoc);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdThuoc);
+    public ResponseEntity<Thuoc> createThuoc(@RequestBody ThuocDAO thuoc) {
+        // Trước khi tạo mới, gán thời gian hiện tại cho trường createAt
+//        thuoc.setCreateAt(new Date());
+
+        // Kiểm tra và gán đối tượng Typethuoc dựa vào typethuocId (nếu có)
+        if (thuoc.getTypethuocId() != null) {
+            Typethuoc typethuoc = typethuocRepository.findById(thuoc.getTypethuocId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy loại thuốc với id: " + thuoc.getTypethuocId()));
+            thuoc.setTypethuocId(typethuoc.getId());
+        }
+        Thuoc newThuoc = new Thuoc();
+        newThuoc.setCompanyName(thuoc.getCompanyName());
+        newThuoc.setComposition(thuoc.getComposition());
+        newThuoc.setName(thuoc.getName());
+        newThuoc.setPrice(thuoc.getPrice());
+        newThuoc.setQuantity(thuoc.getQuantity());
+        newThuoc.setCreateAt(new Date());
+        Typethuoc newTypethuoc = new Typethuoc();
+        newTypethuoc.setId(thuoc.getTypethuocId());
+        
+        newThuoc.setTypethuocId(newTypethuoc);
+        
+        Thuoc createdThuoc = thuocRepository.save(newThuoc);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(createdThuoc);
     }
 
     @PutMapping("/{id}")
@@ -49,11 +75,10 @@ public class ThuocController {
         return ResponseEntity.noContent().build();
     }
 
-     @GetMapping("/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Thuoc getTypethuoc(@PathVariable Integer id) {
         return thuocRepository.findById(id).orElse(null);
     }
 
-    
 }

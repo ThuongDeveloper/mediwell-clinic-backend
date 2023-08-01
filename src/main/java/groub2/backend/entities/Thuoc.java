@@ -24,6 +24,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.PrePersist;
+
 /**
  *
  * @author DELL
@@ -184,6 +186,11 @@ public class Thuoc implements Serializable {
     @Override
     public String toString() {
         return "groub2.backend.entities.Thuoc[ id=" + id + " ]";
+    }
+    
+    @PrePersist // Đánh dấu phương thức được gọi tự động trước khi lưu mới
+    public void prePersist() {
+        createAt = new Date();
     }
     
 }
