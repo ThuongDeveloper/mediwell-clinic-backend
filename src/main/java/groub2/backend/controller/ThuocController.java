@@ -4,12 +4,8 @@
  */
 package groub2.backend.controller;
 
-import groub2.backend.dto.ThuocDAO;
 import groub2.backend.entities.Thuoc;
-import groub2.backend.entities.Typethuoc;
-import groub2.backend.res.ThuocRepository;
-import groub2.backend.res.TypethuocRepository;
-import java.util.Date;
+import groub2.backend.service.ThuocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,67 +14,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/thuoc")
+@RequestMapping("/api/thuoc")
 public class ThuocController {
 
     @Autowired
-    private ThuocRepository thuocRepository;
-    private TypethuocRepository typethuocRepository;
-
+    ThuocService service;
+    
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Thuoc> getAllthuoc() {
-        return thuocRepository.findAll();
+    public List<Thuoc> read(){
+      return  service.getAll();
     }
+    
+        @PostMapping("/create")
+        @ResponseStatus(HttpStatus.OK)
+          public boolean create(@RequestBody Thuoc thuoc){
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Thuoc> createThuoc(@RequestBody ThuocDAO thuoc) {
-        // Trước khi tạo mới, gán thời gian hiện tại cho trường createAt
-//        thuoc.setCreateAt(new Date());
+            var flag =  service.saveThuoc(thuoc);
 
-        // Kiểm tra và gán đối tượng Typethuoc dựa vào typethuocId (nếu có)
-        if (thuoc.getTypethuocId() != null) {
-            Typethuoc typethuoc = typethuocRepository.findById(thuoc.getTypethuocId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy loại thuốc với id: " + thuoc.getTypethuocId()));
-            thuoc.setTypethuocId(typethuoc.getId());
+            return flag;
+
         }
-        Thuoc newThuoc = new Thuoc();
-        newThuoc.setCompanyName(thuoc.getCompanyName());
-        newThuoc.setComposition(thuoc.getComposition());
-        newThuoc.setName(thuoc.getName());
-        newThuoc.setPrice(thuoc.getPrice());
-        newThuoc.setQuantity(thuoc.getQuantity());
-        newThuoc.setCreateAt(new Date());
-        Typethuoc newTypethuoc = new Typethuoc();
-        newTypethuoc.setId(thuoc.getTypethuocId());
-        
-        newThuoc.setTypethuocId(newTypethuoc);
-        
-        Thuoc createdThuoc = thuocRepository.save(newThuoc);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(createdThuoc);
-    }
 
-    @PutMapping("/{id}")
+      @GetMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Thuoc> updateThuoc(@PathVariable Integer id, @RequestBody Thuoc thuoc) {
-        thuoc.setId(id);
-        Thuoc updatedThuoc = thuocRepository.save(thuoc);
-        return ResponseEntity.ok(updatedThuoc);
+    public Thuoc getOneThuoc(@PathVariable int id){
+       Thuoc obj = service.getOneThuocById(id).get();
+      return  obj;
     }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteThuoc(@PathVariable Integer id) {
-        thuocRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    
+    @PutMapping("/edit")
+      @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Thuoc> getOneThuoc(@RequestBody Thuoc thuoc){
+           var model =  service.editTypeThuoc(thuoc);
+            
+     return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Thuoc getTypethuoc(@PathVariable Integer id) {
-        return thuocRepository.findById(id).orElse(null);
+    
+      @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+        boolean deleteSuccessful = service.deleteThuocId(id);
+        if (deleteSuccessful) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Xóa không thành công");
+        }
     }
 
 }
