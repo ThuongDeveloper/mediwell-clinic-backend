@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -32,14 +31,14 @@ public class TaophieukhamController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Taophieukham> addTaophieukham(@RequestBody Taophieukham taophieukham) {
         Tservice.addTaophieukham(taophieukham);
         return new ResponseEntity<>(taophieukham, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Taophieukham> updateTaophieukham(@PathVariable Integer id, @RequestBody Taophieukham updatedTaophieukham) {
         Taophieukham taophieukham = Tservice.getTaophieukhamById(id);
@@ -56,16 +55,15 @@ public class TaophieukhamController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteTaophieukham(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteTaophieukham(@PathVariable int id) {
         Taophieukham taophieukham = Tservice.getTaophieukhamById(id);
         if (taophieukham != null) {
             Tservice.deleteTaophieukham(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Xóa không thành công");
         }
     }
-
 }

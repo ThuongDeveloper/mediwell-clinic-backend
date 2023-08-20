@@ -30,41 +30,42 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 @RequestMapping("/api/doctor")
 public class DoctorController {
+
     @Autowired
     DoctorService service;
-    
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Doctor> read(){
-      return  service.getAll();
+    public List<Doctor> read() {
+        return service.getAll();
     }
-    
-        @PostMapping("/create")
-        @ResponseStatus(HttpStatus.OK)
-          public boolean create(@RequestBody Doctor Doctor){
 
-            var flag =  service.saveDoctor(Doctor);
-
-            return flag;
-
-        }
-
-      @GetMapping("/edit/{id}")
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public Doctor getOneDoctor(@PathVariable int id){
-       Doctor obj = service.getOneDoctorById(id).get();
-      return  obj;
+    public boolean create(@RequestBody Doctor Doctor) {
+
+        var flag = service.saveDoctor(Doctor);
+
+        return flag;
+
     }
-    
+
+    @GetMapping("/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Doctor getOneDoctor(@PathVariable int id) {
+        Doctor obj = service.getOneDoctorById(id).get();
+        return obj;
+    }
+
     @PutMapping("/edit")
-      @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor){
-           var model =  service.editTypeDoctor(Doctor);
-            
-     return new ResponseEntity<>(HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor) {
+        var model = service.editTypeDoctor(Doctor);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-      @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         boolean deleteSuccessful = service.deleteDoctorId(id);
         if (deleteSuccessful) {

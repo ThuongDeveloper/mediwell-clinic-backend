@@ -39,10 +39,10 @@ public class CasherController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Casher> addCasher(@RequestBody Casher casher) {
         casherService.addCasher(casher);
-        return new ResponseEntity<>(casher, HttpStatus.CREATED);
+        return new ResponseEntity<>(casher, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
