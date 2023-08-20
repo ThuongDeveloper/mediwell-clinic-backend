@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.PrePersist;
 
 /**
  *
@@ -63,11 +62,11 @@ public class Thuoc implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @JsonIgnore
     @OneToMany(mappedBy = "thuocId")
+    @JsonIgnore
     private List<DonthuocDetails> donthuocDetailsList;
     @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
-    
+   
     @ManyToOne
     private Typethuoc typethuocId;
     @JsonIgnore
@@ -186,11 +185,6 @@ public class Thuoc implements Serializable {
     @Override
     public String toString() {
         return "groub2.backend.entities.Thuoc[ id=" + id + " ]";
-    }
-    
-    @PrePersist // Đánh dấu phương thức được gọi tự động trước khi lưu mới
-    public void prePersist() {
-        createAt = new Date();
     }
     
 }

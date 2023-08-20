@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -56,7 +57,11 @@ public class Patient implements Serializable {
     @Column(name = "phone")
     private String phone;
     @OneToMany(mappedBy = "patientId")
+    @JsonIgnore
     private List<Appointment> appointmentList;
+    @OneToMany(mappedBy = "patientId")
+    @JsonIgnore
+    private List<Feedback> feedbackList;
 
     public Patient() {
     }
@@ -128,6 +133,15 @@ public class Patient implements Serializable {
 
     public void setAppointmentList(List<Appointment> appointmentList) {
         this.appointmentList = appointmentList;
+    }
+
+    @XmlTransient
+    public List<Feedback> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<Feedback> feedbackList) {
+        this.feedbackList = feedbackList;
     }
 
     @Override

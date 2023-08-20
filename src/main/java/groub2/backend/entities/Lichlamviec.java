@@ -33,7 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Lichlamviec.findById", query = "SELECT l FROM Lichlamviec l WHERE l.id = :id"),
     @NamedQuery(name = "Lichlamviec.findByThu", query = "SELECT l FROM Lichlamviec l WHERE l.thu = :thu"),
     @NamedQuery(name = "Lichlamviec.findByDate", query = "SELECT l FROM Lichlamviec l WHERE l.date = :date"),
-    @NamedQuery(name = "Lichlamviec.findByCreateAt", query = "SELECT l FROM Lichlamviec l WHERE l.createAt = :createAt")})
+    @NamedQuery(name = "Lichlamviec.findByCreateAt", query = "SELECT l FROM Lichlamviec l WHERE l.createAt = :createAt"),
+    @NamedQuery(name = "Lichlamviec.findByStarttime", query = "SELECT l FROM Lichlamviec l WHERE l.starttime = :starttime"),
+    @NamedQuery(name = "Lichlamviec.findByEndtime", query = "SELECT l FROM Lichlamviec l WHERE l.endtime = :endtime")})
 public class Lichlamviec implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +52,12 @@ public class Lichlamviec implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "starttime")
+    @Temporal(TemporalType.TIME)
+    private Date starttime;
+    @Column(name = "endtime")
+    @Temporal(TemporalType.TIME)
+    private Date endtime;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
@@ -91,6 +99,22 @@ public class Lichlamviec implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
     }
 
     public Doctor getDoctorId() {

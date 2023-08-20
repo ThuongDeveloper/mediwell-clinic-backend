@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,8 +61,10 @@ public class Casher implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @OneToMany(mappedBy = "casherId")
+    @JsonIgnore
     private List<Donthuoc> donthuocList;
     @OneToMany(mappedBy = "casherId")
+    @JsonIgnore
     private List<Taophieukham> taophieukhamList;
 
     public Casher() {
@@ -124,11 +126,6 @@ public class Casher implements Serializable {
         return createAt;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        createAt = new Date();
-    }
-    
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
