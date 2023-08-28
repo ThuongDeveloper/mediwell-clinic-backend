@@ -6,8 +6,8 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Doctor.findByEmail", query = "SELECT d FROM Doctor d WHERE d.email = :email"),
     @NamedQuery(name = "Doctor.findByAddress", query = "SELECT d FROM Doctor d WHERE d.address = :address"),
     @NamedQuery(name = "Doctor.findByGender", query = "SELECT d FROM Doctor d WHERE d.gender = :gender"),
-    @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt")})
+    @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt"),
+    @NamedQuery(name = "Doctor.findByImage", query = "SELECT d FROM Doctor d WHERE d.image = :image")})
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,18 +66,23 @@ public class Doctor implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "image")
+    private String image;
     @OneToMany(mappedBy = "doctorId")
     @JsonIgnore
-    private List<Appointment> appointmentList;
+    private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "doctorId")
     @JsonIgnore
-    private List<Lichlamviec> lichlamviecList;
+    private Collection<Appointment> appointmentCollection;
+    @OneToMany(mappedBy = "doctorId")
+    @JsonIgnore
+    private Collection<Lichlamviec> lichlamviecCollection;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
     @OneToMany(mappedBy = "doctorId")
     @JsonIgnore
-    private List<Toathuoc> toathuocList;
+    private Collection<Toathuoc> toathuocCollection;
 
     public Doctor() {
     }
@@ -149,22 +155,39 @@ public class Doctor implements Serializable {
         this.createAt = createAt;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @XmlTransient
-    public List<Appointment> getAppointmentList() {
-        return appointmentList;
+    public Collection<Rating> getRatingCollection() {
+        return ratingCollection;
     }
 
-    public void setAppointmentList(List<Appointment> appointmentList) {
-        this.appointmentList = appointmentList;
+    public void setRatingCollection(Collection<Rating> ratingCollection) {
+        this.ratingCollection = ratingCollection;
     }
 
     @XmlTransient
-    public List<Lichlamviec> getLichlamviecList() {
-        return lichlamviecList;
+    public Collection<Appointment> getAppointmentCollection() {
+        return appointmentCollection;
     }
 
-    public void setLichlamviecList(List<Lichlamviec> lichlamviecList) {
-        this.lichlamviecList = lichlamviecList;
+    public void setAppointmentCollection(Collection<Appointment> appointmentCollection) {
+        this.appointmentCollection = appointmentCollection;
+    }
+
+    @XmlTransient
+    public Collection<Lichlamviec> getLichlamviecCollection() {
+        return lichlamviecCollection;
+    }
+
+    public void setLichlamviecCollection(Collection<Lichlamviec> lichlamviecCollection) {
+        this.lichlamviecCollection = lichlamviecCollection;
     }
 
     public TypeDoctor getTypeDoctorId() {
@@ -176,12 +199,12 @@ public class Doctor implements Serializable {
     }
 
     @XmlTransient
-    public List<Toathuoc> getToathuocList() {
-        return toathuocList;
+    public Collection<Toathuoc> getToathuocCollection() {
+        return toathuocCollection;
     }
 
-    public void setToathuocList(List<Toathuoc> toathuocList) {
-        this.toathuocList = toathuocList;
+    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
+        this.toathuocCollection = toathuocCollection;
     }
 
     @Override
