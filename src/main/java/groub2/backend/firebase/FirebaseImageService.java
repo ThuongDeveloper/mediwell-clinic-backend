@@ -67,11 +67,14 @@ public class FirebaseImageService implements IImageService {
 
     public String uploadImage(Doctor doctor,MultipartFile file) throws IOException  {
         
-     
+
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
          
+     //aaaaa
 
+////aaaa
+        
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build()
@@ -80,7 +83,7 @@ public class FirebaseImageService implements IImageService {
 
         String contentType = file.getContentType();
         // Define the destination path in Firebase Storage
-        String storagePath = "doctors/" +doctor.getId()  + "/" + file.getOriginalFilename();
+        String storagePath = "doctors/" +"1"  + "/" + file.getOriginalFilename();
         //String storagePath =file.getOriginalFilename();
 
         // Convert MultipartFile to byte array
@@ -95,8 +98,8 @@ public class FirebaseImageService implements IImageService {
      
 
     // Generate a signed URL that never expires
-    //  SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
-   // URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
+      SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
+    URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
     
 
       String urlIMAGE = "https://storage.cloud.google.com/"+"project-hk4-27286.appspot.com/" +storagePath;
