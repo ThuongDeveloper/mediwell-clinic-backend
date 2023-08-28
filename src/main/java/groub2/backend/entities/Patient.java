@@ -6,7 +6,7 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Patient.findByName", query = "SELECT p FROM Patient p WHERE p.name = :name"),
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
-    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone")})
+    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image")})
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,12 +57,17 @@ public class Patient implements Serializable {
     private String address;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "image")
+    private String image;
     @OneToMany(mappedBy = "patientId")
     @JsonIgnore
-    private List<Appointment> appointmentList;
+    private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "patientId")
     @JsonIgnore
-    private List<Feedback> feedbackList;
+    private Collection<Appointment> appointmentCollection;
+    @OneToMany(mappedBy = "patientId")
+    @JsonIgnore
+    private Collection<Feedback> feedbackCollection;
 
     public Patient() {
     }
@@ -126,22 +132,39 @@ public class Patient implements Serializable {
         this.phone = phone;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @XmlTransient
-    public List<Appointment> getAppointmentList() {
-        return appointmentList;
+    public Collection<Rating> getRatingCollection() {
+        return ratingCollection;
     }
 
-    public void setAppointmentList(List<Appointment> appointmentList) {
-        this.appointmentList = appointmentList;
+    public void setRatingCollection(Collection<Rating> ratingCollection) {
+        this.ratingCollection = ratingCollection;
     }
 
     @XmlTransient
-    public List<Feedback> getFeedbackList() {
-        return feedbackList;
+    public Collection<Appointment> getAppointmentCollection() {
+        return appointmentCollection;
     }
 
-    public void setFeedbackList(List<Feedback> feedbackList) {
-        this.feedbackList = feedbackList;
+    public void setAppointmentCollection(Collection<Appointment> appointmentCollection) {
+        this.appointmentCollection = appointmentCollection;
+    }
+
+    @XmlTransient
+    public Collection<Feedback> getFeedbackCollection() {
+        return feedbackCollection;
+    }
+
+    public void setFeedbackCollection(Collection<Feedback> feedbackCollection) {
+        this.feedbackCollection = feedbackCollection;
     }
 
     @Override

@@ -6,7 +6,7 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,12 +41,12 @@ public class TypeDoctor implements Serializable {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @JsonIgnore
     @OneToMany(mappedBy = "typeDoctorId")
-    private List<Doctor> doctorList;
     @JsonIgnore
+    private Collection<Doctor> doctorCollection;
     @OneToMany(mappedBy = "typeDoctorId")
-    private List<Taophieukham> taophieukhamList;
+    @JsonIgnore
+    private Collection<Taophieukham> taophieukhamCollection;
 
     public TypeDoctor() {
     }
@@ -72,21 +72,21 @@ public class TypeDoctor implements Serializable {
     }
 
     @XmlTransient
-    public List<Doctor> getDoctorList() {
-        return doctorList;
+    public Collection<Doctor> getDoctorCollection() {
+        return doctorCollection;
     }
 
-    public void setDoctorList(List<Doctor> doctorList) {
-        this.doctorList = doctorList;
+    public void setDoctorCollection(Collection<Doctor> doctorCollection) {
+        this.doctorCollection = doctorCollection;
     }
 
     @XmlTransient
-    public List<Taophieukham> getTaophieukhamList() {
-        return taophieukhamList;
+    public Collection<Taophieukham> getTaophieukhamCollection() {
+        return taophieukhamCollection;
     }
 
-    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
-        this.taophieukhamList = taophieukhamList;
+    public void setTaophieukhamCollection(Collection<Taophieukham> taophieukhamCollection) {
+        this.taophieukhamCollection = taophieukhamCollection;
     }
 
     @Override

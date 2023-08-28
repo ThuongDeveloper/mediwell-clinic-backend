@@ -6,8 +6,8 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,10 +62,10 @@ public class Casher implements Serializable {
     private Date createAt;
     @OneToMany(mappedBy = "casherId")
     @JsonIgnore
-    private List<Donthuoc> donthuocList;
+    private Collection<Donthuoc> donthuocCollection;
     @OneToMany(mappedBy = "casherId")
     @JsonIgnore
-    private List<Taophieukham> taophieukhamList;
+    private Collection<Taophieukham> taophieukhamCollection;
 
     public Casher() {
     }
@@ -131,21 +131,21 @@ public class Casher implements Serializable {
     }
 
     @XmlTransient
-    public List<Donthuoc> getDonthuocList() {
-        return donthuocList;
+    public Collection<Donthuoc> getDonthuocCollection() {
+        return donthuocCollection;
     }
 
-    public void setDonthuocList(List<Donthuoc> donthuocList) {
-        this.donthuocList = donthuocList;
+    public void setDonthuocCollection(Collection<Donthuoc> donthuocCollection) {
+        this.donthuocCollection = donthuocCollection;
     }
 
     @XmlTransient
-    public List<Taophieukham> getTaophieukhamList() {
-        return taophieukhamList;
+    public Collection<Taophieukham> getTaophieukhamCollection() {
+        return taophieukhamCollection;
     }
 
-    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
-        this.taophieukhamList = taophieukhamList;
+    public void setTaophieukhamCollection(Collection<Taophieukham> taophieukhamCollection) {
+        this.taophieukhamCollection = taophieukhamCollection;
     }
 
     @Override
