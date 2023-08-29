@@ -71,9 +71,7 @@ public class FirebaseImageService implements IImageService {
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
          
-     //aaaaa
-
-////aaaa
+ 
         
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
