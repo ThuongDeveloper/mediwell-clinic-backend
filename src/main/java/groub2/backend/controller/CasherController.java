@@ -9,6 +9,7 @@ import groub2.backend.service.CasherService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,6 +22,9 @@ public class CasherController {
 
     @Autowired
     CasherService casherService;
+    
+     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -41,6 +45,8 @@ public class CasherController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Casher> addCasher(@RequestBody Casher casher) {
+        casher.setPassword(bCryptPasswordEncoder.encode(casher.getPassword()));
+        casher.setRole("CASHER");
         casherService.addCasher(casher);
         return new ResponseEntity<>(casher, HttpStatus.OK);
     }

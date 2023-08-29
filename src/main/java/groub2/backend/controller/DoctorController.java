@@ -8,11 +8,13 @@ import groub2.backend.entities.Casher;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
 import groub2.backend.service.DoctorService;
+import java.util.Date;
 import java.util.List;
 import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,9 @@ public class DoctorController {
 
     @Autowired
     DoctorService service;
+    
+     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +48,9 @@ public class DoctorController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
     public boolean create(@RequestBody Doctor Doctor) {
-
+        Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
+        Doctor.setRole("DOCTOR");
+        Doctor.setCreateAt(new Date());
         var flag = service.saveDoctor(Doctor);
 
         return flag;

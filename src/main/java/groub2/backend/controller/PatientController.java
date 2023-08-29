@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,9 @@ public class PatientController {
     
     @Autowired
     PatientService patientService;
+    
+     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -50,6 +54,8 @@ public class PatientController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+        patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
+        patient.setRole("PATIENT");
         patientService.addPatient(patient);
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
