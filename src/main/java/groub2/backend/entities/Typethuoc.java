@@ -6,7 +6,7 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,9 +41,9 @@ public class Typethuoc implements Serializable {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @JsonIgnore
     @OneToMany(mappedBy = "typethuocId")
-    private List<Thuoc> thuocList;
+    @JsonIgnore
+    private Collection<Thuoc> thuocCollection;
 
     public Typethuoc() {
     }
@@ -69,12 +69,12 @@ public class Typethuoc implements Serializable {
     }
 
     @XmlTransient
-    public List<Thuoc> getThuocList() {
-        return thuocList;
+    public Collection<Thuoc> getThuocCollection() {
+        return thuocCollection;
     }
 
-    public void setThuocList(List<Thuoc> thuocList) {
-        this.thuocList = thuocList;
+    public void setThuocCollection(Collection<Thuoc> thuocCollection) {
+        this.thuocCollection = thuocCollection;
     }
 
     @Override

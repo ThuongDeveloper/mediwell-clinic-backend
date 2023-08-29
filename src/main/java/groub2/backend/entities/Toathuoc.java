@@ -6,8 +6,8 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,9 +68,9 @@ public class Toathuoc implements Serializable {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
-    @JsonIgnore
     @OneToMany(mappedBy = "toathuocId")
-    private List<ToathuocDetails> toathuocDetailsList;
+    @JsonIgnore
+    private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Toathuoc() {
     }
@@ -152,12 +152,12 @@ public class Toathuoc implements Serializable {
     }
 
     @XmlTransient
-    public List<ToathuocDetails> getToathuocDetailsList() {
-        return toathuocDetailsList;
+    public Collection<ToathuocDetails> getToathuocDetailsCollection() {
+        return toathuocDetailsCollection;
     }
 
-    public void setToathuocDetailsList(List<ToathuocDetails> toathuocDetailsList) {
-        this.toathuocDetailsList = toathuocDetailsList;
+    public void setToathuocDetailsCollection(Collection<ToathuocDetails> toathuocDetailsCollection) {
+        this.toathuocDetailsCollection = toathuocDetailsCollection;
     }
 
     @Override
