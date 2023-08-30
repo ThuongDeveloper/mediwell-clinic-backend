@@ -9,6 +9,7 @@ import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
 import groub2.backend.firebase.FirebaseImageService;
 import groub2.backend.service.DoctorService;
+import java.util.Date;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +45,9 @@ public class DoctorController {
     FirebaseImageService _FirebaseImageService;
     @Autowired
     DoctorService service;
+    
+     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -52,6 +57,15 @@ public class DoctorController {
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    public boolean create(@RequestBody Doctor Doctor) {
+        Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
+        Doctor.setRole("DOCTOR");
+        Doctor.setCreateAt(new Date());
+        var flag = service.saveDoctor(Doctor);
+
+        return flag;
+    }
+
     public boolean create(@RequestPart Doctor Doctor, @RequestPart("file") MultipartFile file) {
             
         try {

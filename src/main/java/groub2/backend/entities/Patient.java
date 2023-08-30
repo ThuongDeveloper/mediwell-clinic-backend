@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,7 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
     @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByRole", query = "SELECT p FROM Patient p WHERE p.role = :role"),
     @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image")})
+
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,6 +60,10 @@ public class Patient implements Serializable {
     private String address;
     @Column(name = "phone")
     private String phone;
+
+     @Size(max = 50)
+    @Column(name = "role")
+    private String role;
     @Column(name = "image")
     private String image;
     @OneToMany(mappedBy = "patientId")
@@ -130,6 +137,14 @@ public class Patient implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getImage() {

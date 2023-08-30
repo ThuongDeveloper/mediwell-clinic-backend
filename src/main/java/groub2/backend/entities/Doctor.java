@@ -24,7 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
+import javax.validation.constraints.Size;
 /**
  *
  * @author DELL
@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Doctor.findByAddress", query = "SELECT d FROM Doctor d WHERE d.address = :address"),
     @NamedQuery(name = "Doctor.findByGender", query = "SELECT d FROM Doctor d WHERE d.gender = :gender"),
     @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt"),
+    @NamedQuery(name = "Doctor.findByRole", query = "SELECT d FROM Doctor d WHERE d.role = :role"),
     @NamedQuery(name = "Doctor.findByImage", query = "SELECT d FROM Doctor d WHERE d.image = :image")})
+
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +68,9 @@ public class Doctor implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Size(max = 50)
+    @Column(name = "role")
+    private String role;
     @Column(name = "image")
     private String image;
     @OneToMany(mappedBy = "doctorId")
@@ -153,6 +158,13 @@ public class Doctor implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+      public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getImage() {
