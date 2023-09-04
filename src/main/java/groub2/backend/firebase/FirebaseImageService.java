@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -70,8 +71,15 @@ public class FirebaseImageService implements IImageService {
 
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
+
+         var    uuid =  UUID.randomUUID(); 
+     //aaaaa
+
+////aaaa
+
          
  
+
         
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -81,7 +89,7 @@ public class FirebaseImageService implements IImageService {
 
         String contentType = file.getContentType();
         // Define the destination path in Firebase Storage
-        String storagePath = "doctors/" +"1"  + "/" + file.getOriginalFilename();
+        String storagePath = "doctors/" +doctor.getUsername()+"/" + file.getOriginalFilename();
         //String storagePath =file.getOriginalFilename();
 
         // Convert MultipartFile to byte array
@@ -99,10 +107,11 @@ public class FirebaseImageService implements IImageService {
       SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
     URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
     
+        //Khi đã up lên xong thì thay đổi URL
+                storagePath = "doctors%2F" +doctor.getUsername()+"%2F" + file.getOriginalFilename();
 
-      String urlIMAGE = "https://storage.cloud.google.com/"+"project-hk4-27286.appspot.com/" +storagePath;
+      String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/"+"project-hk4-27286.appspot.com"+"/o/" +storagePath+"?alt=media";
 
-   
 
         return urlIMAGE;
     }

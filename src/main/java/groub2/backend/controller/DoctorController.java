@@ -55,21 +55,21 @@ public class DoctorController {
         return service.getAll();
     }
 
+//    public boolean create(@RequestBody Doctor Doctor) {
+//        
+//        var flag = service.saveDoctor(Doctor);
+//
+//        return flag;
+//    }
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public boolean create(@RequestBody Doctor Doctor) {
-        Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
-        Doctor.setRole("DOCTOR");
-        Doctor.setCreateAt(new Date());
-        var flag = service.saveDoctor(Doctor);
-
-        return flag;
-    }
 
     public boolean create(@RequestPart Doctor Doctor, @RequestPart("file") MultipartFile file) {
             
         try {
-           
+           Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
+        Doctor.setRole("DOCTOR");
+        Doctor.setCreateAt(new Date());
            String urlIMG =  _FirebaseImageService.uploadImage(Doctor, file);
             Doctor.setImage(urlIMG);
              var flag = service.saveDoctor(Doctor);
