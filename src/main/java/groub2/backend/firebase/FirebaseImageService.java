@@ -71,15 +71,15 @@ public class FirebaseImageService implements IImageService {
 
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
-<<<<<<< HEAD
+
          var    uuid =  UUID.randomUUID(); 
      //aaaaa
 
 ////aaaa
-=======
+
          
  
->>>>>>> 296cf5a0d48a0cb3fcd0918d7376511f064a42a0
+
         
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
