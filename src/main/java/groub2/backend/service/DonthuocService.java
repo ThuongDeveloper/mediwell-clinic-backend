@@ -15,13 +15,13 @@ public class DonthuocService {
         return res.findAll();
     }
 
-    public boolean saveDonthuoc(Donthuoc donthuoc) {
+    public Donthuoc saveDonthuoc(Donthuoc donthuoc) {
 
         try {
             res.save(donthuoc);
-            return true;
+            return donthuoc;
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 
