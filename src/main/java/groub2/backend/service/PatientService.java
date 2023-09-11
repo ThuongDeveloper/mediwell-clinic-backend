@@ -10,6 +10,7 @@ import groub2.backend.res.CasherRepository;
 import groub2.backend.res.PatientRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Service;
 public class PatientService {
     @Autowired
     PatientRepository res;
-
+@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     public List<Patient> findAll() {
         return res.findAll();
     }
@@ -41,7 +43,7 @@ public class PatientService {
                 patient.setName(updatePatient.getName());
             }
             if (updatePatient.getPassword() != null) {
-                patient.setPassword(updatePatient.getPassword());
+                patient.setPassword(bCryptPasswordEncoder.encode(updatePatient.getPassword()));
             }
             if (updatePatient.getEmail() != null) {
                 patient.setEmail(updatePatient.getEmail());
