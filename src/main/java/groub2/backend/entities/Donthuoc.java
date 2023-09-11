@@ -47,7 +47,12 @@ public class Donthuoc implements Serializable {
     private Integer id;
     @Column(name = "total_money")
     private Integer totalMoney;
+     @Column(name = "name")
+    private String name;
+    @Column(name = "phone")
+    private String phone;
     @Column(name = "create_at")
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
@@ -58,6 +63,22 @@ public class Donthuoc implements Serializable {
     private Collection<DonthuocDetails> donthuocDetailsCollection;
 
     public Donthuoc() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Donthuoc(Integer id) {

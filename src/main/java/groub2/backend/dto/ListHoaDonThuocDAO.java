@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class ListHoaDonThuocDAO {
     private String name;
+    private String phone;
+
+   
     private List<HoaDonThuocDAO> listHDT;
 
     public List<HoaDonThuocDAO> getListHDT() {
@@ -29,5 +32,11 @@ public class ListHoaDonThuocDAO {
     public void setListHDT(List<HoaDonThuocDAO> listHDT) {
         this.listHDT = listHDT;
     }
-    
+     public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
