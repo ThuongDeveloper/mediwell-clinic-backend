@@ -5,12 +5,14 @@
 package groub2.backend.res;
 
 import groub2.backend.entities.Rating;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
  * @author Ann
  */
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
-    
+     
 }
