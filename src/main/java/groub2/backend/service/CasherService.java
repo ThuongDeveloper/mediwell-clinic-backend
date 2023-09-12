@@ -4,11 +4,13 @@ import groub2.backend.entities.Casher;
 import groub2.backend.res.CasherRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CasherService {
-
+@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     CasherRepository res;
 
@@ -30,7 +32,7 @@ public class CasherService {
         if (casher != null) {
             // Kiểm tra xem các trường có được cung cấp để cập nhật hay không
             if (updatedCasher.getPassword() != null) {
-                casher.setPassword(updatedCasher.getPassword());
+                casher.setPassword(bCryptPasswordEncoder.encode(updatedCasher.getPassword()));
             }
             if (updatedCasher.getEmail() != null) {
                 casher.setEmail(updatedCasher.getEmail());
