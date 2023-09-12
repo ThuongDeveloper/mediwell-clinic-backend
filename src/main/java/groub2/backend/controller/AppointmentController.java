@@ -49,7 +49,8 @@ public class AppointmentController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointment) {
-          
+         appointment.setTypePayment("ONLINE");
+         appointment.setPrice(50);
         appointmentService.addAppointment(appointment);
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }

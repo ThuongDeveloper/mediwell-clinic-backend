@@ -6,20 +6,10 @@ package groub2.backend.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -49,12 +39,22 @@ public class Taophieukham implements Serializable {
     @Column(name = "sothutu")
     private Integer sothutu;
     @Column(name = "name")
+    @NotNull(message = "Name cannot be left blank!!!")
+    @Length(min = 3, max = 250, message = "Name must be from 3 to 250 characters")
     private String name;
     @Column(name = "phone")
+    @NotNull(message = "Phone cannot be left blank!!!")
+    @Length(min = 10, max = 30, message = "Phone must be from 10 to 30 numbers")
+    @Pattern(regexp = "^[0-9]+$", message = "Invalid phone")
     private String phone;
     @Column(name = "address")
+    @NotNull(message = "Address cannot be left blank!!!")
+    @Length(min = 10, max = 250, message = "Address must be from 10 to 250 characters")
     private String address;
     @Column(name = "total_money")
+    @NotNull(message = "Total money cannot be left blank!!!")
+    @Min(value = 1, message = "Total money cannot be less than 1 number!")
+    @Max(value = 1000000000, message = "Total money cannot be more than 1000000000 numbers!")
     private Integer totalMoney;
     @Column(name = "patient_id")
     private Integer patientId;
