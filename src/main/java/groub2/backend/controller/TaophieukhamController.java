@@ -32,10 +32,10 @@ public class TaophieukhamController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Taophieukham> addTaophieukham(@RequestBody Taophieukham taophieukham) {
         Tservice.addTaophieukham(taophieukham);
-        return new ResponseEntity<>(taophieukham, HttpStatus.CREATED);
+        return new ResponseEntity<>(taophieukham, HttpStatus.OK);
     }
 
     @PutMapping("/edit/{id}")
