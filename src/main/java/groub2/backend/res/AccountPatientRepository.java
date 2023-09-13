@@ -16,6 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author DELL
  */
 public interface AccountPatientRepository extends JpaRepository<Patient, Integer> {
-     @Query("SELECT c FROM Patient c WHERE c.email LIKE %:email%")
+     @Query("SELECT c FROM Patient c WHERE c.email = :email")
     public Patient SearchByEmail(@PathVariable("email") String email);
 }
