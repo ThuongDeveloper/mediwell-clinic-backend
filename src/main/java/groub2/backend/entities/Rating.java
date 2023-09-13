@@ -43,7 +43,7 @@ public class Rating implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "rating")
-    private Integer rating;
+    private Double rating;
     @Column(name = "comment")
     private String comment;
     @Column(name = "create_at")
@@ -71,11 +71,11 @@ public class Rating implements Serializable {
         this.id = id;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
