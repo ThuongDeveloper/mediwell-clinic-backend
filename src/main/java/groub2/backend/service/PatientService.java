@@ -68,4 +68,14 @@ public class PatientService {
         // Sử dụng repository để kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
         return res.existsByEmail(email);
     }
+    
+    public Patient findPatientByEmail(String email) {
+        // Sử dụng patientRepository hoặc phương thức nào đó để tìm kiếm bệnh nhân bằng email
+        return res.findByEmail(email);
+    }
+    
+    
+    public boolean checkEmailAndPhoneExists(String email, String phone) {
+        return res.existsByEmailAndPhone(email, phone);
+    }
 }
