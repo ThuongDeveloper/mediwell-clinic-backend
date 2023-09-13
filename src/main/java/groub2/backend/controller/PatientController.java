@@ -88,5 +88,11 @@ public class PatientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/checkEmail/{email}")
+    public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
+        boolean exists = patientService.checkEmailExists(email);
+        return ResponseEntity.ok(exists);
+    }
     
 }
