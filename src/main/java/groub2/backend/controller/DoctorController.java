@@ -4,6 +4,7 @@
  */
 package groub2.backend.controller;
 
+import groub2.backend.dto.DoctorWithRating;
 import groub2.backend.entities.Casher;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
@@ -105,4 +106,10 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Xóa không thành công");
         }
     }
+     @GetMapping("/withrating")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Object> getDoctorwithRating() {
+        return service.getDoctorwithRating();
+    }
+   
 }

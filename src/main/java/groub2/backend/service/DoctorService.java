@@ -4,6 +4,7 @@
  */
 package groub2.backend.service;
 
+import groub2.backend.dto.DoctorWithRating;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
 import groub2.backend.res.DoctorRepository;
@@ -21,6 +22,11 @@ public class DoctorService {
     @Autowired
     DoctorRepository res;
     
+    public List<Object> getDoctorwithRating(){
+        return res.getDoctorsWithAverageRating();
+    }
+    
+ 
     public List<Doctor> getAll(){
         return res.findAll();
     }
