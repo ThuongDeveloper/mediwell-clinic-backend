@@ -63,4 +63,9 @@ public class PatientService {
     public void deletePatient(Integer id) {
         res.deleteById(id);
     }
+
+    public boolean checkEmailExists(String email) {
+        // Sử dụng repository để kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+        return res.existsByEmail(email);
+    }
 }
