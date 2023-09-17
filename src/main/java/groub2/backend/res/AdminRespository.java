@@ -12,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author DELL
  */
 public interface AdminRespository extends JpaRepository<Admin, Integer> {
-    
+    boolean existsByEmail(String email);
 }

@@ -91,7 +91,8 @@ public class PatientController {
 
     @GetMapping("/checkEmail/{email}")
     public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
-        boolean exists = patientService.checkEmailExists(email);
+        // Kiểm tra email tồn tại trong bất kỳ loại người dùng nào
+        boolean exists = patientService.checkEmailExistsForAnyUserType(email);
         return ResponseEntity.ok(exists);
     }
     

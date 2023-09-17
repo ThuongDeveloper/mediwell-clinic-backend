@@ -6,7 +6,9 @@ package groub2.backend.service;
 
 import groub2.backend.entities.Casher;
 import groub2.backend.entities.Patient;
+import groub2.backend.res.AdminRespository;
 import groub2.backend.res.CasherRepository;
+import groub2.backend.res.DoctorRepository;
 import groub2.backend.res.PatientRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,14 @@ import org.springframework.stereotype.Service;
 public class PatientService {
     @Autowired
     PatientRepository res;
+    @Autowired
+    private AdminRespository adminRepository;
+
+    @Autowired
+    private CasherRepository cashierRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     public List<Patient> findAll() {
@@ -77,5 +87,16 @@ public class PatientService {
     
     public boolean checkEmailAndPhoneExists(String email, String phone) {
         return res.existsByEmailAndPhone(email, phone);
+    }
+
+    public boolean checkEmailExistsForAnyUserType(String email) {
+        // Kiểm tra email tồn tại trong các loại người dùng khác nhau
+        boolean emailExistsInAdmin = adminRepository.existsByEmail(email);
+        boolean emailExistsInCashier = cashierRepository.existsByEmail(email);
+        boolean emailExistsInPatient = res.existsByEmail(email);
+        boolean emailExistsInDoctor = doctorRepository.existsByEmail(email);
+
+        // Trả về true nếu email tồn tại trong bất kỳ loại người dùng nào
+        return emailExistsInAdmin || emailExistsInCashier || emailExistsInPatient || emailExistsInDoctor;
     }
 }
