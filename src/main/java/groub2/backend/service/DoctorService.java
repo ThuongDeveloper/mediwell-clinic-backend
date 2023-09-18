@@ -25,10 +25,13 @@ public class DoctorService {
     public List<Object> getDoctorwithRating(){
         return res.getDoctorsWithAverageRating();
     }
-    
  
     public List<Doctor> getAll(){
         return res.findAll();
+    }
+    
+    public List<Doctor> filterDoctors(TypeDoctor type) {
+        return res.findByTypeDoctorId(type);
     }
     
     public boolean saveDoctor(Doctor doctor){

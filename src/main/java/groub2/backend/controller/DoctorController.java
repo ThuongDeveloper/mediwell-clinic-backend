@@ -55,7 +55,7 @@ public class DoctorController {
     public List<Doctor> read() {
         return service.getAll();
     }
-
+   
 //    public boolean create(@RequestBody Doctor Doctor) {
 //        
 //        var flag = service.saveDoctor(Doctor);
