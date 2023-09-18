@@ -14,4 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CasherRepository extends JpaRepository<Casher, Integer> {
     Casher findByName(String name);
+    boolean existsByEmail(String email);
 }
