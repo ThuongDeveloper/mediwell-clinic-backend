@@ -1,5 +1,7 @@
 package groub2.backend.dto;
 
+import groub2.backend.entities.Doctor;
+
 import java.util.List;
 
 public class listToathuocDAO {
@@ -14,6 +16,7 @@ public class listToathuocDAO {
     public listToathuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
     }
+
 
     public String getName() {
         return name;
