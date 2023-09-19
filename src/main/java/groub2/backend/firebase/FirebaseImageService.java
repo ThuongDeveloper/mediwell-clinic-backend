@@ -16,6 +16,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import groub2.backend.entities.Doctor;
+import groub2.backend.entities.Patient;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -66,52 +67,39 @@ public class FirebaseImageService implements IImageService {
         }
     }
 
-    public String uploadImage(Doctor doctor,MultipartFile file) throws IOException  {
-        
+    public String uploadImage(Doctor doctor, MultipartFile file) throws IOException {
 
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
 
-         var    uuid =  UUID.randomUUID(); 
-     //aaaaa
+        var uuid = UUID.randomUUID();
 
-////aaaa
-
-         
- 
-
-        
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build()
                 .getService();
-       
 
         String contentType = file.getContentType();
         // Define the destination path in Firebase Storage
-        String storagePath = "doctors/" +doctor.getUsername()+"/" + file.getOriginalFilename();
+        String storagePath = "doctors/" + doctor.getUsername() + "/" + file.getOriginalFilename();
         //String storagePath =file.getOriginalFilename();
 
         // Convert MultipartFile to byte array
         byte[] fileBytes = file.getBytes();
 
         // Upload the file to Firebase Storage
-       
         BlobId blobId = BlobId.of("project-hk4-27286.appspot.com", storagePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
         Blob blob = storage.create(blobInfo, fileBytes);
-        
-     
 
-    // Generate a signed URL that never expires
-      SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
-    URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
-    
+        // Generate a signed URL that never expires
+        SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
+        URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
+
         //Khi đã up lên xong thì thay đổi URL
-                storagePath = "doctors%2F" +doctor.getUsername()+"%2F" + file.getOriginalFilename();
+        storagePath = "doctors%2F" + doctor.getUsername() + "%2F" + file.getOriginalFilename();
 
-      String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/"+"project-hk4-27286.appspot.com"+"/o/" +storagePath+"?alt=media";
-
+        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "project-hk4-27286.appspot.com" + "/o/" + storagePath + "?alt=media";
 
         return urlIMAGE;
     }
@@ -133,7 +121,7 @@ public class FirebaseImageService implements IImageService {
                 fileNames.add(blob.getName());
             }
         }
-   
+
         return fileNames;
     }
 
