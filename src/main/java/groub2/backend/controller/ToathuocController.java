@@ -1,6 +1,7 @@
 package groub2.backend.controller;
 
 import groub2.backend.dto.listToathuocDAO;
+import groub2.backend.entities.Doctor;
 import groub2.backend.entities.Thuoc;
 import groub2.backend.entities.Toathuoc;
 import groub2.backend.entities.ToathuocDetails;
@@ -53,7 +54,7 @@ public class ToathuocController {
         newToathuoc.setSymptom(listToathuocDAO.getSymptom());
         newToathuoc.setDescription(listToathuocDAO.getDescription());
         newToathuoc.setState(listToathuocDAO.isState());
-
+        newToathuoc.setDoctorId(listToathuocDAO.getDoctorId());
         var modelToathuoc =  toathuocService.saveToathuoc(newToathuoc);
 
 

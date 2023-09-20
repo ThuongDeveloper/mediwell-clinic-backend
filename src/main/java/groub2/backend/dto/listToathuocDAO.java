@@ -13,10 +13,18 @@ public class listToathuocDAO {
     private boolean state;
     private List<toathuocDAO> listTT;
 
+    private Doctor doctorId;
     public listToathuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
     }
 
+    public Doctor getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Doctor doctorId) {
+        this.doctorId = doctorId;
+    }
 
     public String getName() {
         return name;
