@@ -25,7 +25,9 @@ public class ToathuocService {
         }
     }
 
-
+    public Toathuoc getToathuocById(Integer id) {
+        return res.findById(id).orElse(null);
+    }
 
 
 }

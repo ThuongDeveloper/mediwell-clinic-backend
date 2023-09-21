@@ -55,7 +55,7 @@ public class DoctorController {
     public List<Doctor> read() {
         return service.getAll();
     }
-
+   
 //    public boolean create(@RequestBody Doctor Doctor) {
 //        
 //        var flag = service.saveDoctor(Doctor);
@@ -71,7 +71,7 @@ public class DoctorController {
            Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
         Doctor.setRole("DOCTOR");
         Doctor.setCreateAt(new Date());
-           String urlIMG =  _FirebaseImageService.uploadImage(Doctor, file);
+           String urlIMG =  _FirebaseImageService.uploadImageDoctor(Doctor, file);
             Doctor.setImage(urlIMG);
              var flag = service.saveDoctor(Doctor);
             return flag;

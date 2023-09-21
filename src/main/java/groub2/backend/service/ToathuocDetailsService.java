@@ -34,4 +34,9 @@ public class ToathuocDetailsService {
             return false;
         }
     }
+
+    public List<ToathuocDetails> getToathuocDetailsByToathuocId(Integer toathuocId) {
+        return res.findByToathuocId(toathuocId);
+    }
+
 }

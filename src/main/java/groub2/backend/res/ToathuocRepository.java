@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 public interface ToathuocRepository extends JpaRepository<Toathuoc, Integer> {
+    Toathuoc findById(int id);
 }
