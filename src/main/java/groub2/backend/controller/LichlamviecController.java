@@ -87,4 +87,13 @@ public class LichlamviecController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping("/getfromdoctor/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<Lichlamviec>> getLichFromDoctor(@PathVariable Integer id) {
+          Doctor newDoctor = new Doctor();
+          newDoctor.setId(id);
+       var lich = lichService.getLichByDoctorID(newDoctor);
+        return new ResponseEntity<>(lich, HttpStatus.OK);
+    }
 }

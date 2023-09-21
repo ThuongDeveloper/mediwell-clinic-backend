@@ -5,9 +5,11 @@
 package groub2.backend.service;
 
 import groub2.backend.entities.Casher;
+import groub2.backend.entities.Doctor;
 import groub2.backend.entities.Lichlamviec;
 import groub2.backend.res.CasherRepository;
 import groub2.backend.res.LichlamviecRepository;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +64,9 @@ public class LichlamviecService {
             return res.save(lich);
         }
         return null;
+    }
+     public List<Lichlamviec> getLichByDoctorID(Doctor doctorID) {
+        return res.findByDoctorId(doctorID);
     }
 
     public void deleteLich(Integer id) {

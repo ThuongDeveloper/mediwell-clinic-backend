@@ -110,6 +110,7 @@ public class DoctorController {
     @ResponseStatus(HttpStatus.OK)
     public List<Object> getDoctorwithRating() {
         return service.getDoctorwithRating();
+    
     }
    
 }
