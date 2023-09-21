@@ -67,7 +67,7 @@ public class FirebaseImageService implements IImageService {
         }
     }
 
-    public String uploadImage(Doctor doctor, MultipartFile file) throws IOException {
+    public String uploadImageDoctor(Doctor doctor, MultipartFile file) throws IOException {
 
         FileInputStream serviceAccount
                 = new FileInputStream("./serviceAccount.json");
@@ -98,6 +98,43 @@ public class FirebaseImageService implements IImageService {
 
         //Khi đã up lên xong thì thay đổi URL
         storagePath = "doctors%2F" + doctor.getUsername() + "%2F" + file.getOriginalFilename();
+
+        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "project-hk4-27286.appspot.com" + "/o/" + storagePath + "?alt=media";
+
+        return urlIMAGE;
+    }
+    
+    public String uploadImagePatient(Patient patient, MultipartFile file) throws IOException {
+
+        FileInputStream serviceAccount
+                = new FileInputStream("./serviceAccount.json");
+
+        var uuid = UUID.randomUUID();
+
+        Storage storage = StorageOptions.newBuilder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build()
+                .getService();
+
+        String contentType = file.getContentType();
+        // Define the destination path in Firebase Storage
+        String storagePath = "patients/" + patient.getUsername() + "/" + file.getOriginalFilename();
+        //String storagePath =file.getOriginalFilename();
+
+        // Convert MultipartFile to byte array
+        byte[] fileBytes = file.getBytes();
+
+        // Upload the file to Firebase Storage
+        BlobId blobId = BlobId.of("project-hk4-27286.appspot.com", storagePath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
+        Blob blob = storage.create(blobInfo, fileBytes);
+
+        // Generate a signed URL that never expires
+        SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
+        URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
+
+        //Khi đã up lên xong thì thay đổi URL
+        storagePath = "patients%2F" + patient.getUsername() + "%2F" + file.getOriginalFilename();
 
         String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "project-hk4-27286.appspot.com" + "/o/" + storagePath + "?alt=media";
 

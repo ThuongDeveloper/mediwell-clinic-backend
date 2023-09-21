@@ -1,4 +1,11 @@
+<<<<<<< HEAD
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
+ */
+=======
 
+>>>>>>> b2df7968f9917a48815ddce979375d12db12abb8
 package groub2.backend.controller;
 
 import groub2.backend.entities.Patient;
@@ -29,12 +36,12 @@ public class EmailController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/request")
-    public ResponseEntity<String> requestPasswordReset(@RequestParam("email") String email, @RequestParam("phone") String phone) {
+    public ResponseEntity<String> requestPasswordReset(@RequestParam("email") String email, @RequestParam("phone") String phone) throws MessagingException {
         // Check if a patient with the provided email and phone exists
         boolean patientExists = patientService.checkEmailAndPhoneExists(email, phone);
 
         if (patientExists) {
-            try {
+         
                 // Generate a new password
                 String newPassword = generateRandomPassword();
 
@@ -47,10 +54,7 @@ public class EmailController {
                 sendPasswordResetEmail(email, newPassword);
 
                 return ResponseEntity.ok("Password reset email sent successfully.");
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("An error occurred while processing your request.");
-            }
+            
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Patient with the provided email and phone does not exist.");
@@ -77,5 +81,8 @@ public class EmailController {
         mailSender.send(message);
     }
 }
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> b2df7968f9917a48815ddce979375d12db12abb8
