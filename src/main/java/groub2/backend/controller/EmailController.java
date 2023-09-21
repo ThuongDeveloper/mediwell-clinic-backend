@@ -10,7 +10,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
@@ -35,14 +35,20 @@ public class EmailController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/request")
-    public ResponseEntity<String> requestPasswordReset(@RequestParam("email") String email, @RequestParam("phone") String phone) {
+    public ResponseEntity<String> requestPasswordReset(@RequestParam("email") String email, @RequestParam("phone") String phone) throws MessagingException {
         // Check if a patient with the provided email and phone exists
         boolean patientExists = patientService.checkEmailAndPhoneExists(email, phone);
 
         if (patientExists) {
+<<<<<<< HEAD
             try {
                 // Generate a new strong password
                 String newPassword = generateStrongRandomPassword();
+=======
+         
+                // Generate a new password
+                String newPassword = generateRandomPassword();
+>>>>>>> 29e5eac96fa1050dc618aba1b6a45b2bbe1c50bc
 
                 // Update the patient's password in the database
                 Patient patient = patientService.findPatientByEmail(email);
@@ -53,6 +59,7 @@ public class EmailController {
                 // Check if the password was updated successfully
                 boolean passwordUpdated = isPasswordUpdated(email, newPassword);
 
+<<<<<<< HEAD
                 if (passwordUpdated) {
                     // Send the password reset email
                     boolean emailSent = sendPasswordResetEmail(email, newPassword);
@@ -74,6 +81,10 @@ public class EmailController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("An error occurred while processing your request.");
             }
+=======
+                return ResponseEntity.ok("Password reset email sent successfully.");
+            
+>>>>>>> 29e5eac96fa1050dc618aba1b6a45b2bbe1c50bc
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Patient with the provided email and phone does not exist.");
@@ -144,4 +155,8 @@ public class EmailController {
         return bCryptPasswordEncoder.matches(newPassword, encryptedPassword);
     }
 }
+<<<<<<< HEAD
+=======
 
+
+>>>>>>> b2df7968f9917a48815ddce979375d12db12abb8

@@ -5,10 +5,13 @@
 package groub2.backend.controller;
 
 import groub2.backend.entities.Patient;
+import groub2.backend.firebase.FirebaseImageService;
 import groub2.backend.service.PatientService;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -28,11 +33,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 @RequestMapping("/api/patient")
 public class PatientController {
-    
+
+    @Autowired
+    FirebaseImageService _FirebaseImageService;
+
     @Autowired
     PatientService patientService;
-    
-     @Autowired
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping()
@@ -51,22 +59,36 @@ public class PatientController {
         }
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+    public ResponseEntity<Patient> addPatient(@RequestPart Patient patient, @RequestPart("file") MultipartFile file) throws IOException {
         patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
         patient.setRole("PATIENT");
+        String urlIMG = _FirebaseImageService.uploadImagePatient(patient, file);
+        patient.setImage(urlIMG);
         patientService.addPatient(patient);
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Patient> updatePatient(@PathVariable Integer id, @RequestBody Patient updatedPatient) {
+    public ResponseEntity<Patient> updatePatient(
+            @PathVariable Integer id,
+            @RequestPart(name = "file", required = false) MultipartFile file,
+            @RequestPart("updatedPatient") Patient updatedPatient
+    ) throws IOException {
         Patient patient = patientService.getPatientById(id);
         if (patient != null) {
+            // Xử lý tệp tin ảnh nếu tệp không trống
+            if (file != null && !file.isEmpty()) {
+                String urlIMG = _FirebaseImageService.uploadImagePatient(updatedPatient, file);
+                updatedPatient.setImage(urlIMG);
+            }
+
+            // Kiểm tra và cập nhật các trường dữ liệu khác của updatedPatient
             updatedPatient.setId(id);
             Patient updated = patientService.updatePatient(updatedPatient);
+
             if (updated != null) {
                 return new ResponseEntity<>(updated, HttpStatus.OK);
             } else {
@@ -91,8 +113,9 @@ public class PatientController {
 
     @GetMapping("/checkEmail/{email}")
     public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
-        boolean exists = patientService.checkEmailExists(email);
+        // Kiểm tra email tồn tại trong bất kỳ loại người dùng nào
+        boolean exists = patientService.checkEmailExistsForAnyUserType(email);
         return ResponseEntity.ok(exists);
     }
-    
+
 }
