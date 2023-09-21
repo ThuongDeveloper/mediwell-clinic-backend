@@ -4,13 +4,17 @@
  */
 package groub2.backend.controller;
 
+import groub2.backend.dto.RatingDAO;
+import groub2.backend.dto.listToathuocDAO;
 import groub2.backend.entities.Rating;
+import groub2.backend.entities.Toathuoc;
 import groub2.backend.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,6 +47,20 @@ public class RatingController {
         
         ratingService.addRating(rating);
         return new ResponseEntity<>(rating, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/createRating")
+    public ResponseEntity<?> addRatingPatient(@RequestBody RatingDAO ratingDAO) {
+        Rating newRating = new Rating();
+        newRating.setCreateAt(new Date());
+        newRating.setRating(ratingDAO.getRating());
+        newRating.setComment(ratingDAO.getComment());
+        newRating.setPatientId(ratingDAO.getPatient_id());
+        newRating.setDoctorId(ratingDAO.getDoctor_id());
+
+        ratingService.addRating(newRating);
+
+        return new ResponseEntity<>(newRating, HttpStatus.CREATED);
     }
 
     @PutMapping("/edit/{id}")
