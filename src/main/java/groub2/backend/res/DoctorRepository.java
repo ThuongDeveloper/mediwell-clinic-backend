@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/Repository.java to edit this template
- */
 package groub2.backend.res;
 
 import groub2.backend.entities.Doctor;
@@ -29,9 +25,12 @@ List<Object> getDoctorsWithAverageRatingAndFilterByName(@Param("name") String na
 
     boolean existsByEmail(String email);
 
+<<<<<<< HEAD
    
 
 
    
+=======
+>>>>>>> b30e97df662b9795683051b2ff1f935559b6e167
 
 }

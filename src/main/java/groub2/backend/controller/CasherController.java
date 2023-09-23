@@ -22,8 +22,8 @@ public class CasherController {
 
     @Autowired
     CasherService casherService;
-    
-     @Autowired
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping()
@@ -80,4 +80,3 @@ public class CasherController {
         }
     }
 }
-
