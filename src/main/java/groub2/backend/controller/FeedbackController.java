@@ -49,7 +49,7 @@ public class FeedbackController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Feedback> addCasher(@RequestBody Feedback feedback) {
+    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
         feedbackService.addFeedback(feedback);
         return new ResponseEntity<>(feedback, HttpStatus.OK);
     }

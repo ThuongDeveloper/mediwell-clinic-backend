@@ -1,4 +1,3 @@
-
 package groub2.backend.controller;
 
 import groub2.backend.entities.Patient;
