@@ -13,9 +13,13 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
+
+    @Query("SELECT d, AVG(r.rating) AS average_rating FROM Doctor d LEFT JOIN Rating r ON d.id = r.doctorId.id GROUP BY d.id, d.name, d.role, d.typeDoctorId, d.email, d.address, d.gender, d.image, d.createAt, d.password, d.username")
+    List<Object> getDoctorsWithAverageRating();
+
     List<Doctor> findByTypeDoctorId(TypeDoctor type);
 
-      @Query("SELECT d, AVG(r.rating) AS average_rating FROM Doctor d LEFT JOIN Rating r ON d.id = r.doctorId.id GROUP BY d.id, d.name, d.role, d.typeDoctorId, d.email, d.address, d.gender, d.image, d.createAt, d.password, d.username")
-    List<Object> getDoctorsWithAverageRating();
-      boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
+
+
 }
