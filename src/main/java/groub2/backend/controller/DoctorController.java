@@ -12,6 +12,7 @@ import groub2.backend.firebase.FirebaseImageService;
 import groub2.backend.service.DoctorService;
 import java.util.Date;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,6 +111,17 @@ public class DoctorController {
     @ResponseStatus(HttpStatus.OK)
     public List<Object> getDoctorwithRating() {
         return service.getDoctorwithRating();
+    
+    }
+         @GetMapping("/withrating/search={search}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Object> getDoctorwithRatingAndFilter(@PathVariable String search) {
+        var list = service.getDoctorwithRating();
+
+        if(search != null && search != ""){
+            list = service.getDoctorwithRatingSearchName(search);
+        }
+        return list;
     
     }
    

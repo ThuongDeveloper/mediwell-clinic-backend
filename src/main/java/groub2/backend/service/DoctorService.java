@@ -25,6 +25,9 @@ public class DoctorService {
     public List<Object> getDoctorwithRating(){
         return res.getDoctorsWithAverageRating();
     }
+    public List<Object> getDoctorwithRatingSearchName(String name){
+        return res.getDoctorsWithAverageRatingAndFilterByName(name);
+    }
  
     public List<Doctor> getAll(){
         return res.findAll();

@@ -40,15 +40,14 @@ public class EmailController {
         boolean patientExists = patientService.checkEmailAndPhoneExists(email, phone);
 
         if (patientExists) {
-<<<<<<< HEAD
+
             try {
                 // Generate a new strong password
                 String newPassword = generateStrongRandomPassword();
-=======
+
          
                 // Generate a new password
-                String newPassword = generateRandomPassword();
->>>>>>> 29e5eac96fa1050dc618aba1b6a45b2bbe1c50bc
+              //  String newPassword = generateRandomPassword();
 
                 // Update the patient's password in the database
                 Patient patient = patientService.findPatientByEmail(email);
@@ -59,7 +58,7 @@ public class EmailController {
                 // Check if the password was updated successfully
                 boolean passwordUpdated = isPasswordUpdated(email, newPassword);
 
-<<<<<<< HEAD
+
                 if (passwordUpdated) {
                     // Send the password reset email
                     boolean emailSent = sendPasswordResetEmail(email, newPassword);
@@ -81,10 +80,10 @@ public class EmailController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("An error occurred while processing your request.");
             }
-=======
-                return ResponseEntity.ok("Password reset email sent successfully.");
+
             
->>>>>>> 29e5eac96fa1050dc618aba1b6a45b2bbe1c50bc
+            
+
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Patient with the provided email and phone does not exist.");
@@ -155,8 +154,3 @@ public class EmailController {
         return bCryptPasswordEncoder.matches(newPassword, encryptedPassword);
     }
 }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b2df7968f9917a48815ddce979375d12db12abb8

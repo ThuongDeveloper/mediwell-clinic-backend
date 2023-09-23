@@ -9,6 +9,8 @@ import groub2.backend.firebase.FirebaseImageService;
 import groub2.backend.service.PatientService;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,15 +61,62 @@ public class PatientController {
         }
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Patient> addPatient(@RequestPart Patient patient, @RequestPart("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
         patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
         patient.setRole("PATIENT");
-        String urlIMG = _FirebaseImageService.uploadImagePatient(patient, file);
-        patient.setImage(urlIMG);
         patientService.addPatient(patient);
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/updateImage/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Patient> UpdateImage(
+            @PathVariable Integer id,
+            @RequestPart(name = "file", required = false) MultipartFile file) {
+        
+        Patient patient = patientService.getPatientById(id);
+        if (patient == null) {
+//               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Xử lý tệp tin ảnh nếu tệp không trống
+        if (file != null && !file.isEmpty()) {
+            try {
+                String urlIMG = _FirebaseImageService.uploadImagePatient(patient, file);
+                patient.setImage(urlIMG);
+            } catch (IOException ex) {
+               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        // Kiểm tra và cập nhật các trường dữ liệu khác của updatedPatient
+      
+        Patient updated = patientService.updatePatient(patient);
+
+        if (updated != null) {
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Patient> updatePatient(@PathVariable Integer id, @RequestBody Patient updatedPatient) {
+        Patient patient = patientService.getPatientById(id);
+        if (patient != null) {
+            updatedPatient.setId(id);
+            Patient updated = patientService.updatePatient(updatedPatient);
+            if (updated != null) {
+                return new ResponseEntity<>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
