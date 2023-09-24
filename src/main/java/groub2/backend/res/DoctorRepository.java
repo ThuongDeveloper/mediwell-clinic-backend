@@ -25,12 +25,6 @@ List<Object> getDoctorsWithAverageRatingAndFilterByName(@Param("name") String na
 
     boolean existsByEmail(String email);
 
-<<<<<<< HEAD
-   
 
-
-   
-=======
->>>>>>> b30e97df662b9795683051b2ff1f935559b6e167
 
 }
