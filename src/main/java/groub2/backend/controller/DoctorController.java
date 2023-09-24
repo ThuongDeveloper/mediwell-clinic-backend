@@ -143,7 +143,7 @@ public class DoctorController {
 
     @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor) {
+    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor,@RequestPart("file") MultipartFile file) {
         var model = service.editTypeDoctor(Doctor);
 
         return new ResponseEntity<>(HttpStatus.OK);

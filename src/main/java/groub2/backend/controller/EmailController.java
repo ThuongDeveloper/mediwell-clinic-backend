@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
- */
-<<<<<<< HEAD
-=======
-
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
->>>>>>> 48499ed57239d9b363880c60e71f27a7b6e75e61
 package groub2.backend.controller;
 import groub2.backend.entities.Patient;
 import groub2.backend.service.PatientService;
@@ -159,7 +144,3 @@ public class EmailController {
     }
 }
 
-<<<<<<< HEAD
-=======
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
->>>>>>> 48499ed57239d9b363880c60e71f27a7b6e75e61
