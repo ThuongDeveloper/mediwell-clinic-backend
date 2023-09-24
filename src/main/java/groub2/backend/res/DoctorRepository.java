@@ -16,11 +16,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     @Query("SELECT d, AVG(r.rating) AS average_rating FROM Doctor d LEFT JOIN Rating r ON d.id = r.doctorId.id GROUP BY d.id, d.name, d.role, d.typeDoctorId, d.email, d.address, d.gender, d.image, d.createAt, d.password, d.username")
     List<Object> getDoctorsWithAverageRating();
-<<<<<<< HEAD
     
-=======
-
->>>>>>> f0578bb91d4b5920f110e6893b67c89496d03eb9
     @Query("SELECT d, AVG(r.rating) AS average_rating FROM Doctor d LEFT JOIN Rating r ON d.id = r.doctorId.id WHERE d.name LIKE %:name% GROUP BY d.id, d.name, d.role, d.typeDoctorId, d.email, d.address, d.gender, d.image, d.createAt, d.password, d.username")
     List<Object> getDoctorsWithAverageRatingAndFilterByName(@Param("name") String name);
 
