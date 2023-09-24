@@ -38,28 +38,34 @@ public class Casher implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "name")
-    @NotNull(message = "Name cannot be left blank!!!")
-    @Length(min = 3, max = 250, message = "Name must be from 3 to 250 characters")
+    @NotBlank(message = "Name cannot be left blank!!!")
+    @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
+    
     @Column(name = "username")
-    @NotNull(message = "Username cannot be left blank!!!")
-    @Length(min = 3, max = 250, message = "Username must be from 3 to 250 characters")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$", message = "Invalid username")
+    @NotBlank(message = "Username cannot be left blank!!!")
+    @Length(min = 3, max = 30, message = "Username must be from 3 to 30 characters")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$", message = "Invalid username")
     private String username;
+    
     @Column(name = "password")
-    @NotNull(message = "Password cannot be left blank!!!")
-    @Length(min = 8, max = 250, message = "Password must be from 8 to 250 characters")
+    @NotBlank(message = "Password cannot be left blank!!!")
+    @Length(min = 8, max = 100, message = "Password must be from 8 to 100 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "Invalid password")
     private String password;
+    
     @Column(name = "email")
-    @NotNull(message = "Email cannot be left blank!!!")
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
-    @Length(min = 11, message = "Email must have at least 11 characters")
+    @NotBlank(message = "Email cannot be left blank!!!")
+//    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
+//    @Length(min = 11, message = "Email must have at least 11 characters")
+    @Email
     private String email;
+    
     @Column(name = "address")
-    @NotNull(message = "Address cannot be left blank!!!")
-    @Length(min = 10, max = 250, message = "Address must be from 10 to 250 characters")
+    @NotBlank(message = "Address cannot be left blank!!!")
+    @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
+    
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
