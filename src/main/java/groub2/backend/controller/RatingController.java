@@ -44,7 +44,6 @@ public class RatingController {
         if (rating.getId() != null) {
             return new ResponseEntity<>("ID must be null for new rating.", HttpStatus.BAD_REQUEST);
         }
-        
         ratingService.addRating(rating);
         return new ResponseEntity<>(rating, HttpStatus.CREATED);
     }

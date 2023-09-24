@@ -26,7 +26,6 @@ import org.hibernate.validator.constraints.Length;
     @NamedQuery(name = "Taophieukham.findByPhone", query = "SELECT t FROM Taophieukham t WHERE t.phone = :phone"),
     @NamedQuery(name = "Taophieukham.findByAddress", query = "SELECT t FROM Taophieukham t WHERE t.address = :address"),
     @NamedQuery(name = "Taophieukham.findByTotalMoney", query = "SELECT t FROM Taophieukham t WHERE t.totalMoney = :totalMoney"),
-    @NamedQuery(name = "Taophieukham.findByPatientId", query = "SELECT t FROM Taophieukham t WHERE t.patientId = :patientId"),
     @NamedQuery(name = "Taophieukham.findByCreateAt", query = "SELECT t FROM Taophieukham t WHERE t.createAt = :createAt")})
 public class Taophieukham implements Serializable {
 
@@ -38,26 +37,25 @@ public class Taophieukham implements Serializable {
     private Integer id;
     @Column(name = "sothutu")
     private Integer sothutu;
+    @Size(max = 250)
     @Column(name = "name")
-    @NotNull(message = "Name cannot be left blank!!!")
-    @Length(min = 3, max = 250, message = "Name must be from 3 to 250 characters")
+    @NotBlank(message = "Name cannot be left blank!!!")
+    @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
     @Column(name = "phone")
-    @NotNull(message = "Phone cannot be left blank!!!")
+    @NotBlank(message = "Phone cannot be left blank!!!")
     @Length(min = 10, max = 30, message = "Phone must be from 10 to 30 numbers")
     @Pattern(regexp = "^[0-9]+$", message = "Invalid phone")
     private String phone;
     @Column(name = "address")
-    @NotNull(message = "Address cannot be left blank!!!")
-    @Length(min = 10, max = 250, message = "Address must be from 10 to 250 characters")
+    @NotBlank(message = "Address cannot be left blank!!!")
+    @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
     @Column(name = "total_money")
     @NotNull(message = "Total money cannot be left blank!!!")
-    @Min(value = 1, message = "Total money cannot be less than 1 number!")
-    @Max(value = 1000000000, message = "Total money cannot be more than 1000000000 numbers!")
+    @Min(value = 1, message = "Total money cannot be less than 1$!")
+    @Max(value = 1000000000, message = "Total money cannot be more than 1000000000$!")
     private Integer totalMoney;
-    @Column(name = "patient_id")
-    private Integer patientId;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
@@ -121,14 +119,6 @@ public class Taophieukham implements Serializable {
 
     public void setTotalMoney(Integer totalMoney) {
         this.totalMoney = totalMoney;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
     }
 
     public Date getCreateAt() {

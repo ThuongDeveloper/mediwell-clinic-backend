@@ -68,12 +68,28 @@ public class CasherController {
         }
     }
 
+    @PutMapping("/changePassword/{id}")
+    public ResponseEntity<Casher> changePassword(@PathVariable Integer id, @RequestBody Casher newPass) {
+        Casher casher = casherService.getCasherById(id);
+        if (casher != null) {
+            casher.setPassword(bCryptPasswordEncoder.encode(newPass.getPassword()));
+            casherService.updateCasher(casher);
+            return new ResponseEntity<>(casher, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteCasher(@PathVariable Integer id) {
         Casher casher = casherService.getCasherById(id);
         if (casher != null) {
-            casherService.deleteCasher(id);
+            if (casher.getTaophieukhamCollection().isEmpty()) {
+                casherService.deleteCasher(id);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

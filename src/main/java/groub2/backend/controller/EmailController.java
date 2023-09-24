@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
+ */
+<<<<<<< HEAD
+=======
+
+>>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
+>>>>>>> 48499ed57239d9b363880c60e71f27a7b6e75e61
 package groub2.backend.controller;
 import groub2.backend.entities.Patient;
 import groub2.backend.service.PatientService;
@@ -40,10 +55,8 @@ public class EmailController {
                 // Generate a new strong password
                 String newPassword = generateStrongRandomPassword();
 
-         
                 // Generate a new password
-              //  String newPassword = generateRandomPassword();
-
+                //  String newPassword = generateRandomPassword();
                 // Update the patient's password in the database
                 Patient patient = patientService.findPatientByEmail(email);
                 //String encryptedPassword = bCryptPasswordEncoder.encode(newPassword);
@@ -52,7 +65,6 @@ public class EmailController {
 
                 // Check if the password was updated successfully
                 boolean passwordUpdated = isPasswordUpdated(email, newPassword);
-
 
                 if (passwordUpdated) {
                     // Send the password reset email
@@ -75,9 +87,6 @@ public class EmailController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("An error occurred while processing your request.");
             }
-
-            
-            
 
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -150,3 +159,7 @@ public class EmailController {
     }
 }
 
+<<<<<<< HEAD
+=======
+>>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
+>>>>>>> 48499ed57239d9b363880c60e71f27a7b6e75e61
