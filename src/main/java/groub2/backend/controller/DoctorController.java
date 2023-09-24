@@ -4,12 +4,16 @@
  */
 package groub2.backend.controller;
 
+import com.google.j2objc.annotations.AutoreleasePool;
 import groub2.backend.dto.DoctorWithRating;
 import groub2.backend.entities.Casher;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
 import groub2.backend.firebase.FirebaseImageService;
+import groub2.backend.res.AdminRespository;
+import groub2.backend.service.CasherService;
 import groub2.backend.service.DoctorService;
+import groub2.backend.service.PatientService;
 import java.util.Date;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +51,14 @@ public class DoctorController {
     FirebaseImageService _FirebaseImageService;
     @Autowired
     DoctorService service;
+   
     
+        @Autowired
+    AdminRespository res;
+    @Autowired
+    PatientService patientServices;
+    @Autowired
+     CasherService casherService;
      @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -66,19 +77,59 @@ public class DoctorController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
 
-    public boolean create(@RequestPart Doctor Doctor, @RequestPart("file") MultipartFile file) {
-            
+    public ResponseEntity<String>  create(@RequestPart Doctor Doctor, @RequestPart("file") MultipartFile file) {
+        
+        boolean flag = true;
+        var listCasher =    casherService.findAll();
+                 var listPatient =    patientServices.findAll();
+                 var listAdmin = patientServices.findAll();
+                 var listDoctor = service.getAll();
+                   for(var item : listCasher){
+                     if(item.getEmail().equals(Doctor.getEmail())){
+                     flag = false;
+                         break;
+                             };
+                 }
+                   for(var item : listPatient){
+                     if(item.getEmail().equals(Doctor.getEmail())){
+                     flag = false;
+                      break;
+                             };
+                 }
+                    for(var item : listAdmin){
+                     if(item.getEmail().equals(Doctor.getEmail())){
+                     flag = false;
+                      break;
+                             };
+                 }
+                    for(var item : listDoctor){
+                     if(item.getEmail().equals(Doctor.getEmail())){
+                     flag = false;
+                      break;
+                             };
+                 }
+                    if( flag == false){
+                                  return new ResponseEntity<>("EmailTonTai",HttpStatus.OK);
+
+                    }
+        
         try {
            Doctor.setPassword(bCryptPasswordEncoder.encode(Doctor.getPassword()));
         Doctor.setRole("DOCTOR");
         Doctor.setCreateAt(new Date());
            String urlIMG =  _FirebaseImageService.uploadImageDoctor(Doctor, file);
             Doctor.setImage(urlIMG);
-             var flag = service.saveDoctor(Doctor);
-            return flag;
+             var flag1 = service.saveDoctor(Doctor);
+             if(flag1 == true){
+                      return new ResponseEntity<>( "Success",HttpStatus.OK);
+             }else{
+                           return new ResponseEntity<>( "Failed",HttpStatus.INTERNAL_SERVER_ERROR);
+
+             }
+       
         } catch (IOException ex) {
             Logger.getLogger(DoctorController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+          return new ResponseEntity<>( "Failed",HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -92,7 +143,7 @@ public class DoctorController {
 
     @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor) {
+    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor,@RequestPart("file") MultipartFile file) {
         var model = service.editTypeDoctor(Doctor);
 
         return new ResponseEntity<>(HttpStatus.OK);
