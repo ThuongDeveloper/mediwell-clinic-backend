@@ -77,6 +77,7 @@ public class DoctorController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
 
+   
     public ResponseEntity<String>  create(@RequestPart Doctor Doctor, @RequestPart("file") MultipartFile file) {
         
         boolean flag = true;
@@ -134,19 +135,51 @@ public class DoctorController {
 
     }
 
+    
+     @PostMapping(value = "/editnotanh")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Doctor> updateNotAnh(@RequestBody Doctor Doctor) {
+    
+        var model = service.editDoctorNotAnh(Doctor);
+
+        return new ResponseEntity<>(model,HttpStatus.OK);
+    }
+    @PostMapping(value = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> updateCoanh(@RequestPart Doctor Doctor,@RequestPart("file") MultipartFile file) {
+     
+
+        // Xử lý tệp tin ảnh nếu tệp không trống
+        if (file != null && !file.isEmpty()) {
+            try {
+                String urlIMG = _FirebaseImageService.uploadImageDoctor(Doctor, file);
+                Doctor.setImage(urlIMG);
+            
+            } catch (IOException ex) {
+               return new ResponseEntity<>("error",HttpStatus.OK);
+            }
+        }
+
+        // Kiểm tra và cập nhật các trường dữ liệu khác của updatedPatient
+       Doctor doctor =    service.editDoctorNotAnh(Doctor);
+  
+
+        if (doctor != null) {
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("error",HttpStatus.OK);
+        }
+        
+        
+     
+    }
+
+    
     @GetMapping("/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Doctor getOneDoctor(@PathVariable int id) {
         Doctor obj = service.getOneDoctorById(id).get();
         return obj;
-    }
-
-    @PutMapping("/edit")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Doctor> getOneDoctor(@RequestBody Doctor Doctor,@RequestPart("file") MultipartFile file) {
-        var model = service.editTypeDoctor(Doctor);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -5,12 +5,14 @@
 package groub2.backend.service;
 
 import groub2.backend.dto.DoctorWithRating;
+import groub2.backend.entities.Casher;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.TypeDoctor;
 import groub2.backend.res.DoctorRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,7 +23,9 @@ import org.springframework.stereotype.Service;
 public class DoctorService {
     @Autowired
     DoctorRepository res;
+       @Autowired
     
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     public List<Object> getDoctorwithRating(){
         return res.getDoctorsWithAverageRating();
     }
@@ -38,7 +42,7 @@ public class DoctorService {
     }
     
     public boolean saveDoctor(Doctor doctor){
-        
+        doctor.setRole("DOCTOR");
         try {
                 res.save(doctor);
                 return true;
@@ -52,9 +56,34 @@ public class DoctorService {
       
       
     }
-     public Doctor editTypeDoctor(Doctor doctor){
-        res.save(doctor);
-        return doctor;
+     public Doctor editDoctorNotAnh(Doctor doctor){
+           Doctor doctorNew = res.findById(doctor.getId()).orElse(null);
+        if (doctor.getName() != null) {
+                doctorNew.setName(doctor.getName());
+            }
+            if (doctor.getPassword() != null) {
+                doctorNew.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+            }
+            if (doctor.getEmail() != null) {
+                doctorNew.setEmail(doctor.getEmail());
+            }
+            if (doctor.getAddress() != null) {
+                doctorNew.setAddress(doctor.getAddress());
+            }
+           
+            if (doctor.getImage()!= null && doctor.getImage() != "") {
+                doctorNew.setImage(doctor.getImage());
+            }
+               if (doctor.getGender()!= null ) {
+                doctorNew.setGender(doctor.getGender());
+            }
+                  if (doctor.getTypeDoctorId()!= null ) {
+                doctorNew.setTypeDoctorId(doctor.getTypeDoctorId());
+            }
+                  
+             return res.save(doctorNew);
+     
+     
     }
      
      
