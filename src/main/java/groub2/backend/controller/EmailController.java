@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
  */
-<<<<<<< HEAD
-=======
 
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
 package groub2.backend.controller;
 
 import groub2.backend.entities.Patient;
@@ -156,7 +149,3 @@ public class EmailController {
         return bCryptPasswordEncoder.matches(newPassword, encryptedPassword);
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> e17282b3f1ece8f44e33b5a10a184a0acc6aa17c
