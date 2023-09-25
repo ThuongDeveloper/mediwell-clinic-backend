@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- *
+ *ArgumentError (Invalid argument(s): No host specified in URI api/appointment/getAllByPatient/16)
  * @author hokim
  */
 @RestController

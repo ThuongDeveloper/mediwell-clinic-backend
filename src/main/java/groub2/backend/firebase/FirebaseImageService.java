@@ -125,7 +125,7 @@ public class FirebaseImageService implements IImageService {
         byte[] fileBytes = file.getBytes();
 
         // Upload the file to Firebase Storage
-        BlobId blobId = BlobId.of("project-hk4-27286.appspot.com", storagePath);
+        BlobId blobId = BlobId.of("projecthk4chap2.appspot.com", storagePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
         Blob blob = storage.create(blobInfo, fileBytes);
 
