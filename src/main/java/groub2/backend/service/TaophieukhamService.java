@@ -2,6 +2,7 @@ package groub2.backend.service;
 
 import groub2.backend.entities.Casher;
 import groub2.backend.entities.Taophieukham;
+import groub2.backend.entities.TypeDoctor;
 import groub2.backend.res.TaophieukhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,11 @@ public class TaophieukhamService {
     public Taophieukham getTaophieukhamById(Integer id) {
         return res.findById(id).orElse(null);
     }
+    
+    public List<Taophieukham> getTaophieukhamByTypeDoctor(TypeDoctor typedoctor) {
+        return res.findByTypeDoctorId(typedoctor);
+    }
 
-//    public boolean addTaophieukham(Taophieukham newTaophieukham) {
-//        try {
-//            newTaophieukham.setCreateAt(new java.util.Date());
-//            res.save(newTaophieukham);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
     public void addTaophieukham(Taophieukham newTaophieukham) {
         newTaophieukham.setCreateAt(new java.util.Date());
         res.save(newTaophieukham);
@@ -55,8 +51,6 @@ public class TaophieukhamService {
             return res.save(t);
         }
         return null;
-//        res.save(updatedTaophieukham);
-//        return updatedTaophieukham;
     }
 
     public void deleteTaophieukham(Integer id) {

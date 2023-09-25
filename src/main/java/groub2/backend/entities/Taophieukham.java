@@ -36,6 +36,7 @@ public class Taophieukham implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "sothutu")
+    @NotNull(message = "No. cannot be left blank!!!")
     private Integer sothutu;
     @Size(max = 250)
     @Column(name = "name")

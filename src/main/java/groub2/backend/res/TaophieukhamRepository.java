@@ -5,6 +5,8 @@
 package groub2.backend.res;
 
 import groub2.backend.entities.Taophieukham;
+import groub2.backend.entities.TypeDoctor;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface TaophieukhamRepository extends JpaRepository<Taophieukham, Integer> {
     Taophieukham findByName(String name);
+    List<Taophieukham> findByTypeDoctorId(TypeDoctor typedoctor);
 }
