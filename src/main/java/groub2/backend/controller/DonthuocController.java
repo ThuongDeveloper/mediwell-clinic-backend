@@ -1,6 +1,5 @@
 package groub2.backend.controller;
 
-
 import groub2.backend.dto.ListHoaDonThuocDAO;
 import groub2.backend.entities.Casher;
 import groub2.backend.entities.Donthuoc;
@@ -25,50 +24,49 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/donthuoc")
 public class DonthuocController {
+
     @Autowired
     DonthuocService donthuocService;
-     @Autowired
+    @Autowired
     DonthuocDetailsService donthuocDetailsService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Donthuoc> read(){
-        return  donthuocService.getAll();
+    public List<Donthuoc> read() {
+        return donthuocService.getAll();
     }
-      @PostMapping
+
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity addCasher(@RequestBody ListHoaDonThuocDAO listHoaDonThuocDAO) {
-        
-        int totalmoney = 0 ;
+
+        int totalmoney = 0;
         var listobj = listHoaDonThuocDAO.getListHDT();
-        for(int i = 0 ; i < listobj.size();i++){
+        for (int i = 0; i < listobj.size(); i++) {
             totalmoney += (listobj.get(i).getPrice() * listobj.get(i).getQuantity());
         }
+
+        Donthuoc newDonThuoc = new Donthuoc();
+        newDonThuoc.setCreateAt(new Date());
+        newDonThuoc.setName(listHoaDonThuocDAO.getName());
+        newDonThuoc.setPhone(listHoaDonThuocDAO.getPhone());
+        newDonThuoc.setTotalMoney(totalmoney);
+        newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
         
-          Donthuoc newDonThuoc = new Donthuoc();
-          newDonThuoc.setCreateAt(new Date());
-          newDonThuoc.setName(listHoaDonThuocDAO.getName());
-          newDonThuoc.setPhone(listHoaDonThuocDAO.getPhone());
-          newDonThuoc.setTotalMoney(totalmoney);
-          var modelDonthuoc =  donthuocService.saveDonthuoc(newDonThuoc);
-          
-          
-          for(int i = 0 ; i < listobj.size();i++){
-              Thuoc newThuoc = new Thuoc();
-              newThuoc.setId(listobj.get(i).getThuocID());
-              DonthuocDetails newDonthuocDetails = new DonthuocDetails();
-              newDonthuocDetails.setDonthuocId(modelDonthuoc);
-              newDonthuocDetails.setPrice(listobj.get(i).getPrice());
-              newDonthuocDetails.setQuantity(listobj.get(i).getQuantity());
-              newDonthuocDetails.setThuocId(newThuoc);
-              donthuocDetailsService.saveDonthuoc(newDonthuocDetails);
+        var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
+
+        for (int i = 0; i < listobj.size(); i++) {
+            Thuoc newThuoc = new Thuoc();
+            newThuoc.setId(listobj.get(i).getThuocID());
+            DonthuocDetails newDonthuocDetails = new DonthuocDetails();
+            newDonthuocDetails.setDonthuocId(modelDonthuoc);
+            newDonthuocDetails.setPrice(listobj.get(i).getPrice());
+            newDonthuocDetails.setQuantity(listobj.get(i).getQuantity());
+            newDonthuocDetails.setThuocId(newThuoc);
+            donthuocDetailsService.saveDonthuoc(newDonthuocDetails);
         }
-          
-          
-        
-     
-        
+
         var a = listHoaDonThuocDAO;
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
