@@ -5,6 +5,8 @@
 package groub2.backend.controller;
 
 import groub2.backend.entities.Appointment;
+import groub2.backend.entities.Doctor;
+import groub2.backend.entities.Patient;
 import groub2.backend.service.AppointmentService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,15 @@ public class AppointmentController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @GetMapping("/getAllByPatient/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Appointment> getAllByPatient(@PathVariable Integer id) {
+        Patient newPatient = new Patient();
+        newPatient.setId(id);
+        List<Appointment> appointment = appointmentService.getAllByPatientId(newPatient);
+    return appointment;
     }
 }
 
