@@ -1,6 +1,7 @@
 package groub2.backend.controller;
 
 import groub2.backend.entities.Taophieukham;
+import groub2.backend.entities.TypeDoctor;
 import groub2.backend.service.TaophieukhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,16 @@ public class TaophieukhamController {
     @GetMapping("/{id}")
     public ResponseEntity<Taophieukham> get(@PathVariable Integer id) {
         Taophieukham taophieukham = Tservice.getTaophieukhamById(id);
+        if (taophieukham != null) {
+            return new ResponseEntity<>(taophieukham, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/typeDoctorId/{typedoctor}")
+    public ResponseEntity<List<Taophieukham>> getTypeDoctor(@PathVariable TypeDoctor typedoctor) {
+        List<Taophieukham> taophieukham = Tservice.getTaophieukhamByTypeDoctor(typedoctor);
         if (taophieukham != null) {
             return new ResponseEntity<>(taophieukham, HttpStatus.OK);
         } else {
