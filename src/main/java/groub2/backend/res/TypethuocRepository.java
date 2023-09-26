@@ -14,5 +14,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TypethuocRepository extends JpaRepository<Typethuoc, Integer> {
+    Typethuoc findByName(String name);
 
 }

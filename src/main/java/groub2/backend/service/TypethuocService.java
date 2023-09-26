@@ -51,4 +51,12 @@ public class TypethuocService {
         }
         
     }
+    public boolean isTypethuocNameExists(String name) {
+        // Sử dụng Spring Data JPA để kiểm tra xem tên đã tồn tại trong cơ sở dữ liệu chưa
+        // Đây là một ví dụ giả định về cách bạn có thể triển khai nó. Sự triển khai cụ thể có thể khác nhau tùy vào cơ sở dữ liệu của bạn.
+
+        Typethuoc existingTypethuoc = res.findByName(name);
+        return existingTypethuoc != null;
+    }
+
 }
