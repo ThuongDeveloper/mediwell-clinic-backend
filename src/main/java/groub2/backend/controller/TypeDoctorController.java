@@ -48,7 +48,7 @@ public class TypeDoctorController {
           @ResponseStatus(HttpStatus.OK)
     public TypeDoctor getTypeDoctorByID(@PathVariable int id){
         
-        TypeDoctor obj = service.findTypeDoctorbyID(id).get();
+        TypeDoctor obj = service.findTypeDoctorbyID(id);
         return obj;
     }
     

@@ -28,6 +28,10 @@ public class DonthuocDetailsService {
     public List<DonthuocDetails> getAll() {
         return res.findAll() ; 
     }
+
+    public DonthuocDetails getDonThuocDetailsId(int id) {
+        return res.findById(id).orElse(null);
+    }
     
     
 
