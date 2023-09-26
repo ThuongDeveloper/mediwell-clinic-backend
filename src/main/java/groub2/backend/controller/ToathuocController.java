@@ -240,8 +240,7 @@ public class ToathuocController {
         }
 
         // Thêm chữ ký bác sĩ (dưới thông tin đơn thuốc chi tiết)
-        String doctorSignature = "Doctor's Signature"; // Thay đổi thành chữ ký thực tế của bác sĩ
-
+        String doctorSignature = toathuoc.getDoctorId().getName();
         contentStream.setFont(font, 10);
         contentStream.beginText();
         contentStream.newLineAtOffset(marginX, tableY - 30);

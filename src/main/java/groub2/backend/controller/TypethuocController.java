@@ -21,12 +21,22 @@ public class TypethuocController {
         return service.getAll();
     }
     @PostMapping("/create")
-        @ResponseStatus(HttpStatus.CREATED)
-    public boolean read(@RequestBody Typethuoc typethuoc) {
-       
-        return service.saveTypeThuoc(typethuoc);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> create(@RequestBody Typethuoc typethuoc) {
+        // Check if the name already exists in the database
+        if (service.isTypethuocNameExists(typethuoc.getName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Name already exists in the database.");
+        }
+
+        boolean created = service.saveTypeThuoc(typethuoc);
+        if (created) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Creation successful.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Creation unsuccessful.");
+        }
     }
-    
+
+
     @GetMapping("/edit/{id}")
           @ResponseStatus(HttpStatus.OK)
     public Typethuoc getTypeDoctorByID(@PathVariable int id){
@@ -34,17 +44,17 @@ public class TypethuocController {
         Typethuoc obj = service.findTypethuocbyID(id).get();
         return obj;
     }
-    
-       
+
+
     @PutMapping("/edit")
           @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean edit(@RequestBody Typethuoc typethuoc){
-        
+
         service.editTypethuoc(typethuoc);
-  
+
         return true;
     }
-    
+
     
        @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteTypethuoc(@PathVariable int id) {
