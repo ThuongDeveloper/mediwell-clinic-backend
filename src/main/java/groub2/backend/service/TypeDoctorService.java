@@ -35,8 +35,8 @@ public class TypeDoctorService {
         }
 
     }
-    public Optional<TypeDoctor> findTypeDoctorbyID(int id){
-      return res.findById(id);
+    public TypeDoctor findTypeDoctorbyID(int id){
+      return res.findById(id).orElse(null);
      
     }
     
