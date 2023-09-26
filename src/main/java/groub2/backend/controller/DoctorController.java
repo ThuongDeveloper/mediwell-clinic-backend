@@ -204,6 +204,8 @@ public class DoctorController {
 
         if(search != null && search != ""){
             list = service.getDoctorwithRatingSearchName(search);
+        }else{
+            list = service.getDoctorwithRating();
         }
         return list;
     

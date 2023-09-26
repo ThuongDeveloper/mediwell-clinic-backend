@@ -5,6 +5,7 @@
 package groub2.backend.service;
 
 import groub2.backend.entities.Appointment;
+import groub2.backend.entities.Patient;
 import groub2.backend.res.AppointmentRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,9 @@ public class AppointmentService {
 
     public void deleteAppointment(Integer id) {
         res.deleteById(id);
+    }
+    
+        public List<Appointment> getAllByPatientId(Patient id) {
+        return res.findByPatientId(id);
     }
 }

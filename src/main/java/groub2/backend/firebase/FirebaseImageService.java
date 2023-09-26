@@ -88,7 +88,7 @@ public class FirebaseImageService implements IImageService {
         byte[] fileBytes = file.getBytes();
 
         // Upload the file to Firebase Storage
-        BlobId blobId = BlobId.of("project-hk4-27286.appspot.com", storagePath);
+        BlobId blobId = BlobId.of("projecthk4chap2.appspot.com", storagePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
         Blob blob = storage.create(blobInfo, fileBytes);
 
@@ -99,7 +99,7 @@ public class FirebaseImageService implements IImageService {
         //Khi đã up lên xong thì thay đổi URL
         storagePath = "doctors%2F" + doctor.getUsername() + "%2F" + file.getOriginalFilename();
 
-        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "project-hk4-27286.appspot.com" + "/o/" + storagePath + "?alt=media";
+        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "projecthk4chap2.appspot.com" + "/o/" + storagePath + "?alt=media";
 
         return urlIMAGE;
     }
@@ -125,7 +125,7 @@ public class FirebaseImageService implements IImageService {
         byte[] fileBytes = file.getBytes();
 
         // Upload the file to Firebase Storage
-        BlobId blobId = BlobId.of("project-hk4-27286.appspot.com", storagePath);
+        BlobId blobId = BlobId.of("projecthk4chap2.appspot.com", storagePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
         Blob blob = storage.create(blobInfo, fileBytes);
 
@@ -136,7 +136,7 @@ public class FirebaseImageService implements IImageService {
         //Khi đã up lên xong thì thay đổi URL
         storagePath = "patients%2F" + patient.getUsername() + "%2F" + file.getOriginalFilename();
 
-        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "project-hk4-27286.appspot.com" + "/o/" + storagePath + "?alt=media";
+        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "projecthk4chap2.appspot.com" + "/o/" + storagePath + "?alt=media";
 
         return urlIMAGE;
     }

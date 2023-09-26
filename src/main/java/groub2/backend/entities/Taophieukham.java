@@ -36,6 +36,7 @@ public class Taophieukham implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "sothutu")
+    @NotNull(message = "No. cannot be left blank!!!")
     private Integer sothutu;
     @Size(max = 250)
     @Column(name = "name")
@@ -60,9 +61,11 @@ public class Taophieukham implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
+//    @NotNull(message = "Casher Name cannot be left blank!!!")
     @ManyToOne
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
+//    @NotNull(message = "Type Doctor cannot be left blank!!!")
     @ManyToOne
     private TypeDoctor typeDoctorId;
 
