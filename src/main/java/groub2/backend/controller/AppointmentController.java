@@ -7,7 +7,11 @@ package groub2.backend.controller;
 import groub2.backend.entities.Appointment;
 import groub2.backend.entities.Doctor;
 import groub2.backend.entities.Patient;
+import groub2.backend.entities.Rating;
 import groub2.backend.service.AppointmentService;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,6 +99,30 @@ public class AppointmentController {
         newPatient.setId(id);
         List<Appointment> appointment = appointmentService.getAllByPatientId(newPatient);
     return appointment;
+    }
+    
+    
+     @GetMapping("/filter/startdate={startDate}&enddate={endDate}")
+    public ResponseEntity<List<Appointment>> fliterListAppointment(@PathVariable String startDate,@PathVariable String endDate) {
+    List<Appointment> Listappointments= new ArrayList<>();
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng 
+        
+        if(startDate.equals("") && endDate.equals("")){
+             Listappointments = appointmentService.findAll();
+            return new ResponseEntity<>(Listappointments, HttpStatus.OK);
+        }
+        try {
+            Date dateStart = dateFormat.parse(startDate); 
+            Date dateEnd = dateFormat.parse(endDate);
+         Listappointments = appointmentService.getAppointmentByDate(dateStart,dateEnd);
+        } catch (Exception e) {
+             return new ResponseEntity<>(Listappointments, HttpStatus.NOT_FOUND);
+        }
+        
+           
+      
+        return  new ResponseEntity<>(Listappointments, HttpStatus.OK);
     }
 }
 

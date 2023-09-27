@@ -6,6 +6,7 @@ package groub2.backend.service;
 
 import groub2.backend.entities.Rating;
 import groub2.backend.res.RatingRepository;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,4 +56,8 @@ public class RatingService {
     public void deleteRating(Integer id) {
         res.deleteById(id);
     }
+     public List<Rating> filterRatingByDate(Date startDate, Date endDate) {
+        return res.findRatingsByDateAndIndexDesign(startDate, endDate);
+    }
+   
 }
