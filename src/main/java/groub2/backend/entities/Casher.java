@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.Length;
     @NamedQuery(name = "Casher.findAll", query = "SELECT c FROM Casher c"),
     @NamedQuery(name = "Casher.findById", query = "SELECT c FROM Casher c WHERE c.id = :id"),
     @NamedQuery(name = "Casher.findByName", query = "SELECT c FROM Casher c WHERE c.name = :name"),
-    @NamedQuery(name = "Casher.findByUsername", query = "SELECT c FROM Casher c WHERE c.username = :username"),
+    @NamedQuery(name = "Casher.findByPhone", query = "SELECT c FROM Casher c WHERE c.phone = :phone"),
     @NamedQuery(name = "Casher.findByPassword", query = "SELECT c FROM Casher c WHERE c.password = :password"),
     @NamedQuery(name = "Casher.findByEmail", query = "SELECT c FROM Casher c WHERE c.email = :email"),
     @NamedQuery(name = "Casher.findByAddress", query = "SELECT c FROM Casher c WHERE c.address = :address"),
@@ -41,13 +41,11 @@ public class Casher implements Serializable {
     @NotBlank(message = "Name cannot be left blank!!!")
     @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
-    
-    @Column(name = "username")
-    @NotBlank(message = "Username cannot be left blank!!!")
-    @Length(min = 3, max = 30, message = "Username must be from 3 to 30 characters")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$", message = "Invalid username")
-    private String username;
-    
+    @Size(max = 250)
+    @Column(name = "phone")
+    @NotBlank(message = "Phone cannot be left blank!!!")
+    @Pattern(regexp = "^[0-9]*$", message = "Phone must contain only numbers")
+    private String phone;
     @Column(name = "password")
     @NotBlank(message = "Password cannot be left blank!!!")
     @Length(min = 8, max = 100, message = "Password must be from 8 to 100 characters")
@@ -60,18 +58,24 @@ public class Casher implements Serializable {
 //    @Length(min = 11, message = "Email must have at least 11 characters")
     @Email
     private String email;
-    
+    @Size(max = 250)
     @Column(name = "address")
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-    
-    @Column(name = "create_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
     @Size(max = 50)
     @Column(name = "role")
     private String role;
+    @Column(name = "age")
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "Age cannot be null")
+    private Date age;
+    @Column(name = "gender")
+    @NotNull(message = "Gender cannot be null")
+    private Boolean gender;
+    @Column(name = "create_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createAt;
     @OneToMany(mappedBy = "casherId")
     @JsonIgnore
     private Collection<Donthuoc> donthuocCollection;
@@ -94,6 +98,30 @@ public class Casher implements Serializable {
         this.id = id;
     }
 
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getAge() {
+        return age;
+    }
+
+    public void setAge(Date age) {
+        this.age = age;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
     public String getName() {
         return name;
     }
@@ -102,12 +130,12 @@ public class Casher implements Serializable {
         this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPassword() {
@@ -132,14 +160,6 @@ public class Casher implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
     }
 
     public String getRole() {

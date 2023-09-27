@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,12 +47,17 @@ public class Donthuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "total_money")
     private Integer totalMoney;
      @Column(name = "name")
     private String name;
     @Column(name = "phone")
     private String phone;
+    @Size(max = 255)
+    @Column(name = "address")
+    private String address;
     @Column(name = "create_at")
     
     @Temporal(TemporalType.TIMESTAMP)
@@ -61,6 +68,9 @@ public class Donthuoc implements Serializable {
     @OneToMany(mappedBy = "donthuocId")
     @JsonIgnore
     private Collection<DonthuocDetails> donthuocDetailsCollection;
+    @JoinColumn(name = "phieukham_id", referencedColumnName = "id")
+    @ManyToOne
+    private Taophieukham phieukhamId;
 
     public Donthuoc() {
     }
@@ -115,6 +125,22 @@ public class Donthuoc implements Serializable {
 
     public void setCasherId(Casher casherId) {
         this.casherId = casherId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Taophieukham getPhieukhamId() {
+        return phieukhamId;
+    }
+
+    public void setPhieukhamId(Taophieukham phieukhamId) {
+        this.phieukhamId = phieukhamId;
     }
 
     @XmlTransient

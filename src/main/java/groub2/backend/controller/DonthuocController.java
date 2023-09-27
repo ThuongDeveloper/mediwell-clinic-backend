@@ -1,11 +1,15 @@
 package groub2.backend.controller;
 
 import groub2.backend.dto.ListHoaDonThuocDAO;
+import groub2.backend.entities.Doctor;
 import groub2.backend.entities.Donthuoc;
 import groub2.backend.entities.DonthuocDetails;
+import groub2.backend.entities.Taophieukham;
 import groub2.backend.entities.Thuoc;
+import groub2.backend.service.DoctorService;
 import groub2.backend.service.DonthuocDetailsService;
 import groub2.backend.service.DonthuocService;
+import groub2.backend.service.TaophieukhamService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +43,10 @@ public class DonthuocController {
 
     @Autowired
     DonthuocService donthuocService;
+    @Autowired
+    DoctorService doctorService;
+    @Autowired
+    TaophieukhamService Tservice;
     @Autowired
     DonthuocDetailsService donthuocDetailsService;
 
@@ -93,25 +101,26 @@ public class DonthuocController {
     }
 
     @GetMapping("/export-pdf")
-    public ResponseEntity<byte[]> exportPrescriptionToPDF(@RequestParam("donthuocId") int donthuocId) {
-        if (donthuocId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid donthuocId".getBytes());
+    public ResponseEntity<byte[]> exportPrescriptionToPDF(@RequestParam("donthuocId") int donthuocId, @RequestParam("phieukhamId") int phieukhamId) {
+        if (donthuocId <= 0 || phieukhamId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid donthuocId AND phieukhamId".getBytes());
         }
 
         // Kiểm tra xem toathuocId có tồn tại trong cơ sở dữ liệu không
         Donthuoc donthuoc = donthuocService.getDonThuocId(donthuocId);
-        if (donthuoc == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dơn Thuoc not found".getBytes());
+        Taophieukham taophieukham = Tservice.getTaophieukhamById(phieukhamId);
+        if (donthuoc == null || taophieukham == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dơn Thuoc AND Phieu Kham not found".getBytes());
         }
 
         try {
             // Tạo tài liệu PDF và export dữ liệu vào đó
-            byte[] pdfBytes = createAndExportPDF(donthuoc);
+            byte[] pdfBytes = createAndExportPDF(donthuoc, taophieukham);
 
             // Thiết lập header và trả về file PDF
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "prescription.pdf");
+            headers.setContentDispositionFormData("attachment", "Medication_invoice.pdf");
 
             return ResponseEntity.ok()
                     .headers(headers)
@@ -124,7 +133,7 @@ public class DonthuocController {
         }
     }
 
-    private byte[] createAndExportPDF(Donthuoc donthuoc) throws IOException {
+    private byte[] createAndExportPDF(Donthuoc donthuoc, Taophieukham taophieukham) throws IOException {
         // Tạo một tài liệu PDF mới
         PDDocument document = new PDDocument();
 
@@ -173,7 +182,7 @@ public class DonthuocController {
         contentStream.setFont(font, 16);
         contentStream.beginText();
         contentStream.newLineAtOffset((page.getMediaBox().getWidth() / 2) - 50, page.getMediaBox().getHeight() - 50);
-        contentStream.showText("PRESCRIPTION");
+        contentStream.showText("MEDICATION INVOICE");
         contentStream.endText();
 
         contentStream.setFont(font, 10);
@@ -182,6 +191,10 @@ public class DonthuocController {
         contentStream.showText("Patient Name: " + donthuoc.getName());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Phone: " + donthuoc.getPhone());
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Address: " + donthuoc.getAddress());
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Type of Disease: " + taophieukham.getTypeDoctorId().getName());
         contentStream.endText();
 
         float marginX = 50;
@@ -192,7 +205,7 @@ public class DonthuocController {
         contentStream.setFont(font, 12);
         contentStream.beginText();
         contentStream.newLineAtOffset(marginX, tableY);
-        contentStream.showText("PRESCRIPTION DETAILS");
+        contentStream.showText("MEDICATION INVOICE DETAILS");
         contentStream.endText();
 
         contentStream.setFont(font, 10);
@@ -204,9 +217,9 @@ public class DonthuocController {
         contentStream.newLineAtOffset(marginX, tableY - rowHeight + 4);
         contentStream.showText("Medicine Name");
 
-        float column2X = marginX + 120; // Cột thứ 2
+        float column2X = marginX + 250; // Cột thứ 2
         float column3X = column2X + 100; // Cột thứ 3
-        float column4X = column3X + 220; // Cột thứ 4
+        float column4X = column3X + 100; // Cột thứ 4
 
         contentStream.newLineAtOffset(column2X - marginX, 0);
         contentStream.showText("Quantity");
@@ -233,9 +246,9 @@ public class DonthuocController {
             contentStream.newLineAtOffset(column2X - marginX, 0);
             contentStream.showText(detail.getQuantity().toString());
             contentStream.newLineAtOffset(column3X - column2X, 0);
-            contentStream.showText(decimalFormat.format(detail.getPrice()));
+            contentStream.showText(decimalFormat.format(detail.getPrice()) + "$");
             contentStream.newLineAtOffset(column4X - column3X, 0);
-            contentStream.showText(decimalFormat.format(amount));
+            contentStream.showText(decimalFormat.format(amount) + "$");
             contentStream.endText();
             tableY -= rowHeight * 1;
         }
@@ -243,7 +256,7 @@ public class DonthuocController {
         contentStream.setFont(font, 12);
         contentStream.beginText();
         contentStream.newLineAtOffset(marginX, tableY - 40);
-        contentStream.showText("Total Money: " + decimalFormat.format(donthuoc.getTotalMoney()));
+        contentStream.showText("Total Money: " + decimalFormat.format(donthuoc.getTotalMoney()) + "$");
         contentStream.endText();
 
         String cashierSignature = "Cashier's Signature";

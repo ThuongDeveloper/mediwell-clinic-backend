@@ -6,9 +6,11 @@ package groub2.backend.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -52,6 +54,8 @@ public class Taophieukham implements Serializable {
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
+    @OneToMany(mappedBy = "phieukhamId")
+    private List<Donthuoc> donthuocList;
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
@@ -81,37 +85,6 @@ public class Taophieukham implements Serializable {
         this.id = id;
     }
 
-    public Integer getSothutu() {
-        return sothutu;
-    }
-
-    public void setSothutu(Integer sothutu) {
-        this.sothutu = sothutu;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Integer getTotalMoney() {
         return totalMoney;
@@ -168,6 +141,48 @@ public class Taophieukham implements Serializable {
     @Override
     public String toString() {
         return "groub2.backend.entities.Taophieukham[ id=" + id + " ]";
+    }
+
+    public Integer getSothutu() {
+        return sothutu;
+    }
+
+    public void setSothutu(Integer sothutu) {
+        this.sothutu = sothutu;
+    }
+
+
+    @XmlTransient
+    public List<Donthuoc> getDonthuocList() {
+        return donthuocList;
+    }
+
+    public void setDonthuocList(List<Donthuoc> donthuocList) {
+        this.donthuocList = donthuocList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
     
 }

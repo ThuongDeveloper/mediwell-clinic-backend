@@ -28,31 +28,31 @@ public class CasherService {
         res.save(newCasher);
     }
 
-    public Casher updateCasher(Casher updatedCasher) {
-        Casher casher = res.findById(updatedCasher.getId()).orElse(null);
-        if (casher != null) {
-            // Kiểm tra xem các trường có được cung cấp để cập nhật hay không
-//            if (updatedCasher.getPassword() != null) {
-//                casher.setPassword(bCryptPasswordEncoder.encode(updatedCasher.getPassword()));
+//    public Casher detailCasher(Casher updatedCasher) {
+//        Casher casher = res.findById(updatedCasher.getId()).orElse(null);
+//        if (casher != null) {
+//            // Kiểm tra xem các trường có được cung cấp để cập nhật hay không
+////            if (updatedCasher.getPassword() != null) {
+////                casher.setPassword(bCryptPasswordEncoder.encode(updatedCasher.getPassword()));
+////            }
+//            if (updatedCasher.getEmail() != null) {
+//                casher.setEmail(updatedCasher.getEmail());
 //            }
-            if (updatedCasher.getEmail() != null) {
-                casher.setEmail(updatedCasher.getEmail());
-            }
-            if (updatedCasher.getAddress() != null) {
-                casher.setAddress(updatedCasher.getAddress());
-            }
+//            if (updatedCasher.getAddress() != null) {
+//                casher.setAddress(updatedCasher.getAddress());
+//            }
+//
+//            // Cập nhật ngày tạo mới
+//            casher.setCreateAt(new java.util.Date());
+//
+//            // Lưu đối tượng Casher đã cập nhật vào cơ sở dữ liệu
+//            return res.save(casher);
+//        }
+//        return null;
+//    }
 
-            // Cập nhật ngày tạo mới
-            casher.setCreateAt(new java.util.Date());
-
-            // Lưu đối tượng Casher đã cập nhật vào cơ sở dữ liệu
-            return res.save(casher);
-        }
-        return null;
-    }
-
-    public void changePassword(Integer id, String newPasssword) {
-        res.changePassword(id, newPasssword);
+//    public void changePassword(Integer id, String newPasssword, Casher changePass) {
+//        res.changePassword(id, newPasssword);
         
 //        if (casher != null) {
 //            // Kiểm tra xem các trường có được cung cấp để cập nhật hay không
@@ -70,7 +70,7 @@ public class CasherService {
 //            return res.save(casher);
 //        }
 //        return null;
-    }
+//    }
 
     public void deleteCasher(Integer id) {
         res.deleteById(id);
