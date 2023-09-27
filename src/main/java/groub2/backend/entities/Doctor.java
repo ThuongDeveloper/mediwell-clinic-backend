@@ -247,4 +247,5 @@ public class Doctor implements Serializable {
         return "groub2.backend.entities.Doctor[ id=" + id + " ]";
     }
     
-}
+
+    }
