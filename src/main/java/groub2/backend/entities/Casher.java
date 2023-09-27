@@ -26,6 +26,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -100,8 +102,10 @@ public class Casher implements Serializable {
     @NotNull(message = "Gender cannot be null")
     private Boolean gender;
     @OneToMany(mappedBy = "casherId")
+    @JsonIgnore
     private Collection<Donthuoc> donthuocCollection;
     @OneToMany(mappedBy = "casherId")
+    @JsonIgnore
     private Collection<Taophieukham> taophieukhamCollection;
 
     public Casher() {

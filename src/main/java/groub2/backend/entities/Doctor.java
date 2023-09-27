@@ -4,6 +4,8 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -80,15 +82,19 @@ public class Doctor implements Serializable {
     @Column(name = "role")
     private String role;
     @OneToMany(mappedBy = "doctorId")
+    @JsonIgnore
     private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "doctorId")
+    @JsonIgnore
     private Collection<Appointment> appointmentCollection;
     @OneToMany(mappedBy = "doctorId")
+    @JsonIgnore
     private Collection<Lichlamviec> lichlamviecCollection;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
     @OneToMany(mappedBy = "doctorId")
+    @JsonIgnore
     private Collection<Toathuoc> toathuocCollection;
 
     public Doctor() {
