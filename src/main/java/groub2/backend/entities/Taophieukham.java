@@ -28,6 +28,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -96,6 +98,7 @@ public class Taophieukham implements Serializable {
     private List<Toathuoc> toathuocList;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne

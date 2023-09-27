@@ -4,6 +4,8 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -43,6 +45,7 @@ public class Company implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "companyId")
+    @JsonIgnore
     private Collection<Thuoc> thuocCollection;
 
     public Company() {

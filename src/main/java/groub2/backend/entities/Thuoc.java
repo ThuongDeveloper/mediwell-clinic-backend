@@ -24,6 +24,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -79,6 +81,7 @@ public class Thuoc implements Serializable {
     
     
     @OneToMany(mappedBy = "thuocId")
+    @JsonIgnore
     private Collection<DonthuocDetails> donthuocDetailsCollection;
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ManyToOne
@@ -90,6 +93,7 @@ public class Thuoc implements Serializable {
     @ManyToOne
     private Typethuoc typethuocId;
     @OneToMany(mappedBy = "thuocId")
+    @JsonIgnore
     private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Thuoc() {
