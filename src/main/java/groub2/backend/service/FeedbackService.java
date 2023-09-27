@@ -45,7 +45,7 @@ public class FeedbackService {
         newFeed.setContent(feedbackDAO.getContent());
         newFeed.setStatus(false);
         newFeed.setTitle(feedbackDAO.getTitle());
-        newFeed.setPatientId(patient);
+        
         newFeed.setCreateAt(new java.util.Date());
 //        Lưu newfeed mới và trả về feedback vừa thêm
         return res.save(newFeed);
@@ -64,9 +64,7 @@ public class FeedbackService {
             if (updatedFeedback.getStatus()!= null) {
                 feedback.setStatus(updatedFeedback.getStatus());
             }
-            if (updatedFeedback.getPatientId()!= null) {
-                feedback.setPatientId(updatedFeedback.getPatientId());
-            }
+         
 
             // Cập nhật ngày tạo mới
             feedback.setCreateAt(new java.util.Date());

@@ -118,7 +118,7 @@ public class FirebaseImageService implements IImageService {
 
         String contentType = file.getContentType();
         // Define the destination path in Firebase Storage
-        String storagePath = "patients/" + patient.getUsername() + "/" + file.getOriginalFilename();
+        String storagePath = "patients/" + patient.getId()+ "/" + file.getOriginalFilename();
         //String storagePath =file.getOriginalFilename();
 
         // Convert MultipartFile to byte array
@@ -134,7 +134,7 @@ public class FirebaseImageService implements IImageService {
         URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
 
         //Khi đã up lên xong thì thay đổi URL
-        storagePath = "patients%2F" + patient.getUsername() + "%2F" + file.getOriginalFilename();
+        storagePath = "patients%2F" + patient.getId()+ "%2F" + file.getOriginalFilename();
 
         String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "projecthk4chap2.appspot.com" + "/o/" + storagePath + "?alt=media";
 
