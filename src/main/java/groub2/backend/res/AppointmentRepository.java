@@ -6,8 +6,12 @@ package groub2.backend.res;
 
 import groub2.backend.entities.Appointment;
 import groub2.backend.entities.Patient;
+import groub2.backend.entities.Rating;
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -15,4 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     List<Appointment> findByPatientId(Patient patientId);
+     
+       @Query("SELECT r FROM Appointment r WHERE r.date >= :startDate AND r.date <= :endDate" )
+    List<Appointment> findAppointmentByDate( @Param("startDate") Date startDate,@Param("endDate") Date endDate);
 }

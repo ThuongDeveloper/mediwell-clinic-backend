@@ -6,7 +6,7 @@ package groub2.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -91,13 +91,13 @@ public class Taophieukham implements Serializable {
     private Date dob;
     @Size(max = 250)
     @Column(name = "sympton")
+    @NotBlank(message = "Sympton cannot be left blank!!!")
     private String sympton;
     @OneToMany(mappedBy = "taophieukhamId")
     @JsonIgnore
-    private Collection<Toathuoc> toathuocCollection;
+    private List<Toathuoc> toathuocList;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
-    @JsonIgnore
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
@@ -191,12 +191,19 @@ public class Taophieukham implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Toathuoc> getToathuocCollection() {
-        return toathuocCollection;
+    public List<Toathuoc> getToathuocList() {
+        return toathuocList;
+    }
+    
+    public Integer getToathuocId() {
+        if (toathuocList != null) {
+            return toathuocList.get(0).getId();
+        }
+        return 0;
     }
 
-    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
-        this.toathuocCollection = toathuocCollection;
+    public void setToathuocList(List<Toathuoc> toathuocList) {
+        this.toathuocList = toathuocList;
     }
 
     public Casher getCasherId() {
