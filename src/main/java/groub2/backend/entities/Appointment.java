@@ -52,11 +52,11 @@ public class Appointment implements Serializable {
     @Column(name = "starttime")
    // @Temporal(TemporalType.TIME)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private Date starttime;
+    private String starttime;
     @Column(name = "endtime")
     //@Temporal(TemporalType.TIME)
       @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private Date endtime;
+    private String endtime;
     @Size(max = 250)
     @Column(name = "symptom")
     private String symptom;
@@ -93,19 +93,19 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public Date getStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 
