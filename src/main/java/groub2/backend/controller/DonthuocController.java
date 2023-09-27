@@ -9,6 +9,7 @@ import groub2.backend.service.DonthuocService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class DonthuocController {
     public List<Donthuoc> read() {
         return donthuocService.getAll();
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Donthuoc> get(@PathVariable Integer id) {
         Donthuoc donthuoc = donthuocService.getDonThuocId(id);
@@ -73,7 +74,7 @@ public class DonthuocController {
         newDonThuoc.setPhone(listHoaDonThuocDAO.getPhone());
         newDonThuoc.setTotalMoney(totalmoney);
         newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
-        
+
         var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
 
         for (int i = 0; i < listobj.size(); i++) {
@@ -90,7 +91,7 @@ public class DonthuocController {
         var a = listHoaDonThuocDAO;
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("/export-pdf")
     public ResponseEntity<byte[]> exportPrescriptionToPDF(@RequestParam("donthuocId") int donthuocId) {
         if (donthuocId <= 0) {
@@ -212,12 +213,15 @@ public class DonthuocController {
         contentStream.newLineAtOffset(column3X - column2X, 0);
         contentStream.showText("Price");
         contentStream.newLineAtOffset(column4X - column3X, 0);
-        contentStream.showText("Total Price");
+        contentStream.showText("Into Money");
 
         contentStream.endText();
-
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
         List<DonthuocDetails> donthuocDetailses = (List<DonthuocDetails>) donthuoc.getDonthuocDetailsCollection();
         for (DonthuocDetails detail : donthuocDetailses) {
+            int quantity = detail.getQuantity();
+            double price = detail.getPrice();
+            double amount = quantity * price;
             contentStream.setFont(font, 10);
             contentStream.setLineWidth(1f);
             contentStream.moveTo(marginX, tableY - rowHeight * 2);
@@ -229,18 +233,24 @@ public class DonthuocController {
             contentStream.newLineAtOffset(column2X - marginX, 0);
             contentStream.showText(detail.getQuantity().toString());
             contentStream.newLineAtOffset(column3X - column2X, 0);
-            contentStream.showText(detail.getPrice().toString());
+            contentStream.showText(decimalFormat.format(detail.getPrice()));
             contentStream.newLineAtOffset(column4X - column3X, 0);
-            contentStream.showText(donthuoc.getTotalMoney().toString());
+            contentStream.showText(decimalFormat.format(amount));
             contentStream.endText();
-            tableY -= rowHeight * 2;
+            tableY -= rowHeight * 1;
         }
+
+        contentStream.setFont(font, 12);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(marginX, tableY - 40);
+        contentStream.showText("Total Money: " + decimalFormat.format(donthuoc.getTotalMoney()));
+        contentStream.endText();
 
         String cashierSignature = "Cashier's Signature";
 
         contentStream.setFont(font, 10);
         contentStream.beginText();
-        contentStream.newLineAtOffset(marginX, tableY - 30);
+        contentStream.newLineAtOffset(marginX, tableY - 80);
         contentStream.showText(cashierSignature);
         contentStream.endText();
 
