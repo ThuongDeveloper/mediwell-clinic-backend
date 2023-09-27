@@ -4,8 +4,9 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -27,7 +28,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -83,13 +87,15 @@ public class Taophieukham implements Serializable {
     @Column(name = "gender")
     private Boolean gender;
     @Column(name = "dob")
-    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
     @Size(max = 250)
     @Column(name = "sympton")
+    @NotBlank(message = "Sympton cannot be left blank!!!")
     private String sympton;
     @OneToMany(mappedBy = "taophieukhamId")
-    private Collection<Toathuoc> toathuocCollection;
+    @JsonIgnore
+    private List<Toathuoc> toathuocList;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
     private Casher casherId;
@@ -185,12 +191,19 @@ public class Taophieukham implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Toathuoc> getToathuocCollection() {
-        return toathuocCollection;
+    public List<Toathuoc> getToathuocList() {
+        return toathuocList;
+    }
+    
+    public Integer getToathuocId() {
+        if (toathuocList != null) {
+            return toathuocList.get(0).getId();
+        }
+        return 0;
     }
 
-    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
-        this.toathuocCollection = toathuocCollection;
+    public void setToathuocList(List<Toathuoc> toathuocList) {
+        this.toathuocList = toathuocList;
     }
 
     public Casher getCasherId() {

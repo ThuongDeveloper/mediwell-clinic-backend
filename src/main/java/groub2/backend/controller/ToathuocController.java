@@ -41,6 +41,17 @@ public class ToathuocController {
     public List<Toathuoc> read(){
         return  toathuocService.getAll();
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Toathuoc> get(@PathVariable Integer id) {
+        Toathuoc toathuoc = toathuocService.getToathuocById(id);
+        if (toathuoc != null) {
+            return new ResponseEntity<>(toathuoc, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity addDoctor(@RequestBody listToathuocDAO listToathuocDAO) {
@@ -49,10 +60,9 @@ public class ToathuocController {
 
         Toathuoc newToathuoc = new Toathuoc();
         newToathuoc.setCreateAt(new Date());
-        newToathuoc.getTaophieukhamId().setName(listToathuocDAO.getName());
-        newToathuoc.getTaophieukhamId().setPhone(listToathuocDAO.getPhone());
-        newToathuoc.getTaophieukhamId().setAddress(listToathuocDAO.getAddress());
-        newToathuoc.getTaophieukhamId().setSympton(listToathuocDAO.getSymptom());
+        newToathuoc.setSympton(listToathuocDAO.getSymptom());
+        newToathuoc.setTaophieukhamId(listToathuocDAO.getTaophieukhamId());
+        newToathuoc.setNgaytaikham(listToathuocDAO.getNgaytaikham());
         newToathuoc.setDoctorId(listToathuocDAO.getDoctorId());
         var modelToathuoc =  toathuocService.saveToathuoc(newToathuoc);
 

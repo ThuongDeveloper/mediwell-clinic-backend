@@ -1,7 +1,9 @@
 package groub2.backend.dto;
 
 import groub2.backend.entities.Doctor;
+import groub2.backend.entities.Taophieukham;
 
+import java.util.Date;
 import java.util.List;
 
 public class listToathuocDAO {
@@ -10,10 +12,30 @@ public class listToathuocDAO {
     private String address;
     private String symptom;
     private String description;
+    private Date ngaytaikham;
+
+    public Date getNgaytaikham() {
+        return ngaytaikham;
+    }
+
+    public void setNgaytaikham(Date ngaytaikham) {
+        this.ngaytaikham = ngaytaikham;
+    }
+
     private boolean state;
     private List<toathuocDAO> listTT;
 
     private Doctor doctorId;
+    private Taophieukham taophieukhamId;
+
+    public Taophieukham getTaophieukhamId() {
+        return taophieukhamId;
+    }
+
+    public void setTaophieukhamId(Taophieukham taophieukhamId) {
+        this.taophieukhamId = taophieukhamId;
+    }
+
     public listToathuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
     }
