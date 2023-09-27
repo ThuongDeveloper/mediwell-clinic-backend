@@ -9,10 +9,16 @@ import java.util.List;
 
 @Service
 public class DonthuocService {
+
     @Autowired
     DonthuocRepository res;
+
     public List<Donthuoc> getAll() {
         return res.findAll();
+    }
+
+    public Donthuoc getDonThuocId(int id) {
+        return res.findById(id).orElse(null);
     }
 
     public Donthuoc saveDonthuoc(Donthuoc donthuoc) {
@@ -24,8 +30,5 @@ public class DonthuocService {
             return null;
         }
     }
-
-
-
 
 }

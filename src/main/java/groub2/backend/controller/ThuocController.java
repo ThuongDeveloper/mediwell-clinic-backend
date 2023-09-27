@@ -51,7 +51,7 @@ public class ThuocController {
      return new ResponseEntity<>(HttpStatus.OK);
     }
     
-      @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         boolean deleteSuccessful = service.deleteThuocId(id);
         if (deleteSuccessful) {

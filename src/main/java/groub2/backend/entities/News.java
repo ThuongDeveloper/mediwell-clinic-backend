@@ -44,6 +44,9 @@ public class News implements Serializable {
     @Basic(optional = false)
     @Column(name = "title")
     private String title;
+   
+    @Column(name = "banner")
+    private String banner;
     @Column(name = "content")
     private String content;
     @Column(name = "status")
@@ -51,6 +54,8 @@ public class News implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    
+    private String author;
 
     public News() {
     }
@@ -103,6 +108,24 @@ public class News implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -53,6 +53,7 @@ public class AppointmentController {
     public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointment) {
          appointment.setTypePayment("ONLINE");
          appointment.setPrice(50);
+         appointment.setStatus(Boolean.FALSE);
         appointmentService.addAppointment(appointment);
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }

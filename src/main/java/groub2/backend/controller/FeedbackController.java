@@ -4,6 +4,7 @@
  */
 package groub2.backend.controller;
 
+import groub2.backend.dto.FeedbackDAO;
 import groub2.backend.entities.Feedback;
 import groub2.backend.service.FeedbackService;
 import java.util.List;
@@ -47,10 +48,17 @@ public class FeedbackController {
         }
     }
 
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
+//        feedbackService.addFeedback(feedback);
+//        return new ResponseEntity<>(feedback, HttpStatus.OK);
+//    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
-        feedbackService.addFeedback(feedback);
+    public ResponseEntity<Feedback> addFeedback(@RequestBody FeedbackDAO feedbackDAO) {
+        Feedback feedback = feedbackService.addFeedback(feedbackDAO);
         return new ResponseEntity<>(feedback, HttpStatus.OK);
     }
 

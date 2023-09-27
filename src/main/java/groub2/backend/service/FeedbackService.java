@@ -4,7 +4,9 @@
  */
 package groub2.backend.service;
 
+import groub2.backend.dto.FeedbackDAO;
 import groub2.backend.entities.Feedback;
+import groub2.backend.entities.Patient;
 import groub2.backend.res.FeedbackRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 public class FeedbackService {
     @Autowired
     FeedbackRepository res;
+    
+    @Autowired
+    PatientService patientService;
 
     public List<Feedback> findAll() {
         return res.findAll();
@@ -27,9 +32,23 @@ public class FeedbackService {
         return res.findById(id).orElse(null);
     }
 
-    public void addFeedback(Feedback newFeedback) {
-        newFeedback.setCreateAt(new java.util.Date());
-        res.save(newFeedback);
+//    public void addFeedback(Feedback newFeedback) {
+//        newFeedback.setCreateAt(new java.util.Date());
+//        res.save(newFeedback);
+//    }
+    
+    public Feedback addFeedback(FeedbackDAO feedbackDAO) {
+//        Xác định feedback của patient nào
+        Patient patient = patientService.getPatientById(feedbackDAO.getPatientId());
+//        Tạo đối tượng feed mới
+        Feedback newFeed = new Feedback();
+        newFeed.setContent(feedbackDAO.getContent());
+        newFeed.setStatus(false);
+        newFeed.setTitle(feedbackDAO.getTitle());
+        newFeed.setPatientId(patient);
+        newFeed.setCreateAt(new java.util.Date());
+//        Lưu newfeed mới và trả về feedback vừa thêm
+        return res.save(newFeed);
     }
 
     public Feedback updateFeedback(Feedback updatedFeedback) {
