@@ -6,6 +6,7 @@ import groub2.backend.entities.Donthuoc;
 import groub2.backend.entities.DonthuocDetails;
 import groub2.backend.entities.Taophieukham;
 import groub2.backend.entities.Thuoc;
+import groub2.backend.entities.Toathuoc;
 import groub2.backend.service.DoctorService;
 import groub2.backend.service.DonthuocDetailsService;
 import groub2.backend.service.DonthuocService;
@@ -78,10 +79,13 @@ public class DonthuocController {
 
         Donthuoc newDonThuoc = new Donthuoc();
         newDonThuoc.setCreateAt(new Date());
-        newDonThuoc.setName(listHoaDonThuocDAO.getName());
-        newDonThuoc.setPhone(listHoaDonThuocDAO.getPhone());
-        newDonThuoc.setTotalMoney(totalmoney);
-        newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setName(listHoaDonThuocDAO.getName());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setPhone(listHoaDonThuocDAO.getPhone());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setAddress(listHoaDonThuocDAO.getAddress());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setDob(listHoaDonThuocDAO.getDob());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setGender(listHoaDonThuocDAO.getGender());
+        newDonThuoc.getToathuocId().getTaophieukhamId().setTotalMoney(totalmoney);
+        newDonThuoc.getToathuocId().getTaophieukhamId().setCasherId(listHoaDonThuocDAO.getCasherId());
 
         var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
 
@@ -188,11 +192,11 @@ public class DonthuocController {
         contentStream.setFont(font, 10);
         contentStream.beginText();
         contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
-        contentStream.showText("Patient Name: " + donthuoc.getName());
+        contentStream.showText("Patient Name: " + donthuoc.getToathuocId().getTaophieukhamId().getName());
         contentStream.newLineAtOffset(0, -20);
-        contentStream.showText("Phone: " + donthuoc.getPhone());
+        contentStream.showText("Phone: " + donthuoc.getToathuocId().getTaophieukhamId().getPhone());
         contentStream.newLineAtOffset(0, -20);
-        contentStream.showText("Address: " + donthuoc.getAddress());
+        contentStream.showText("Address: " + donthuoc.getToathuocId().getTaophieukhamId().getAddress());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Type of Disease: " + taophieukham.getTypeDoctorId().getName());
         contentStream.endText();

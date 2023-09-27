@@ -48,12 +48,10 @@ public class ToathuocController {
 
         Toathuoc newToathuoc = new Toathuoc();
         newToathuoc.setCreateAt(new Date());
-        newToathuoc.setName(listToathuocDAO.getName());
-        newToathuoc.setPhone(listToathuocDAO.getPhone());
-        newToathuoc.setAddress(listToathuocDAO.getAddress());
-        newToathuoc.setSymptom(listToathuocDAO.getSymptom());
-        newToathuoc.setDescription(listToathuocDAO.getDescription());
-        newToathuoc.setState(listToathuocDAO.isState());
+        newToathuoc.getTaophieukhamId().setName(listToathuocDAO.getName());
+        newToathuoc.getTaophieukhamId().setPhone(listToathuocDAO.getPhone());
+        newToathuoc.getTaophieukhamId().setAddress(listToathuocDAO.getAddress());
+        newToathuoc.getTaophieukhamId().setSympton(listToathuocDAO.getSymptom());
         newToathuoc.setDoctorId(listToathuocDAO.getDoctorId());
         var modelToathuoc =  toathuocService.saveToathuoc(newToathuoc);
 
@@ -164,11 +162,11 @@ public class ToathuocController {
         contentStream.setFont(font, 10);
         contentStream.beginText();
         contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
-        contentStream.showText("Patient Name: " + toathuoc.getName());
+        contentStream.showText("Patient Name: " + toathuoc.getTaophieukhamId().getName());
         contentStream.newLineAtOffset(0, -20);
-        contentStream.showText("Address: " + toathuoc.getAddress());
+        contentStream.showText("Address: " + toathuoc.getTaophieukhamId().getAddress());
         contentStream.newLineAtOffset(0, -20);
-        contentStream.showText("Symptoms: " + toathuoc.getSymptom());
+        contentStream.showText("Symptoms: " + toathuoc.getTaophieukhamId().getSympton());
         contentStream.endText();
 
         // Thêm đơn thuốc chi tiết
