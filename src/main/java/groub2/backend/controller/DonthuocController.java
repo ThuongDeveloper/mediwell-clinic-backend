@@ -88,6 +88,9 @@ public class DonthuocController {
         newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
 //        newDonThuoc.setToathuocId(listHoaDonThuocDAO.getToathuocId());
 
+      
+
+
         var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
 
         for (int i = 0; i < listobj.size(); i++) {
