@@ -98,7 +98,6 @@ public class Taophieukham implements Serializable {
     private List<Toathuoc> toathuocList;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
-    @JsonIgnore
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
