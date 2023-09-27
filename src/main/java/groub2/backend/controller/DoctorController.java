@@ -51,10 +51,6 @@ public class DoctorController {
     FirebaseImageService _FirebaseImageService;
     @Autowired
     DoctorService service;
-   
-    
-        @Autowired
-    AdminRespository res;
     @Autowired
     PatientService patientServices;
     @Autowired

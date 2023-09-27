@@ -165,6 +165,14 @@ public class Patient implements Serializable {
         this.gender = gender;
     }
 
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
     @XmlTransient
     public Collection<Rating> getRatingCollection() {
         return ratingCollection;

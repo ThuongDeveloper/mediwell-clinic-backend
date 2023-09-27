@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -57,7 +59,7 @@ public class Casher implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-   @Column(name = "name")
+    @Column(name = "name")
     @NotBlank(message = "Name cannot be left blank!!!")
     @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
@@ -71,7 +73,7 @@ public class Casher implements Serializable {
     @Length(min = 8, max = 100, message = "Password must be from 8 to 100 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "Invalid password")
     private String password;
-    
+
     @Column(name = "email")
     @NotBlank(message = "Email cannot be left blank!!!")
 //    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
@@ -83,19 +85,18 @@ public class Casher implements Serializable {
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-    
-    
+
     @Size(max = 50)
     @Column(name = "role")
     private String role;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
-   
+
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    
-   @Column(name = "dob")
-    @Temporal(TemporalType.DATE)
+
+    @Column(name = "dob")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Dob cannot be null")
     private Date dob;
     @Column(name = "gender")
@@ -237,5 +238,5 @@ public class Casher implements Serializable {
     public String toString() {
         return "groub2.backend.entities.Casher[ id=" + id + " ]";
     }
-    
+
 }
