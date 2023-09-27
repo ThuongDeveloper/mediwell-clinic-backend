@@ -41,6 +41,17 @@ public class ToathuocController {
     public List<Toathuoc> read(){
         return  toathuocService.getAll();
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Toathuoc> get(@PathVariable Integer id) {
+        Toathuoc toathuoc = toathuocService.getToathuocById(id);
+        if (toathuoc != null) {
+            return new ResponseEntity<>(toathuoc, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity addDoctor(@RequestBody listToathuocDAO listToathuocDAO) {
