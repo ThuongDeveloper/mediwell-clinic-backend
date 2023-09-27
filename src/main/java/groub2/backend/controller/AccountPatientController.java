@@ -7,6 +7,7 @@ package groub2.backend.controller;
 import groub2.backend.dto.CheckLoginMobileDAO;
 import groub2.backend.entities.Appointment;
 import groub2.backend.entities.Patient;
+import groub2.backend.res.AdminRespository;
 import groub2.backend.service.AccountPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,18 +30,28 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/api/accountpatient")
 public class AccountPatientController {
     
+    @Autowired
+    private AdminRespository resAdmin;
        @Autowired
     private AccountPatientService serviceAccount;
       @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;    
+      
     @PostMapping("/checklogin")
-    @ResponseStatus(HttpStatus.OK)
-   
-    public ResponseEntity<Patient> checkLogin(@RequestBody CheckLoginMobileDAO model) {
+    @ResponseStatus(HttpStatus.OK)  
+    public ResponseEntity<Object> checkLogin(@RequestBody CheckLoginMobileDAO model) {
         try {
                var list = serviceAccount.SearchByEmail(model.email);
                if(list == null){
-                   return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                   
+                   var objAdmin = resAdmin.SearchByEmail(model.email);
+                   if(objAdmin == null){
+                       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                   }else{
+                       return new ResponseEntity<>(objAdmin,HttpStatus.OK);
+                   }
+                   
+                   
                }
            var aaa = bCryptPasswordEncoder.matches(model.password,list.getPassword());
           

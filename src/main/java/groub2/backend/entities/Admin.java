@@ -43,6 +43,8 @@ public class Admin implements Serializable {
     private String password;
     @Column(name = "email")
     private String email;
+      @Column(name = "role")
+    private String role;
 
     public Admin() {
     }
@@ -82,7 +84,13 @@ public class Admin implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+  public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
