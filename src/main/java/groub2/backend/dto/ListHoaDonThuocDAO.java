@@ -5,6 +5,7 @@
 package groub2.backend.dto;
 
 import groub2.backend.entities.Casher;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,10 +15,12 @@ import java.util.List;
 public class ListHoaDonThuocDAO {
     private String name;
     private String phone;
+    private String address;
+    private Date dob;
+    private Boolean gender;
+    private String sympton;
     private Casher casherId; 
-
-
-   
+    
     private List<HoaDonThuocDAO> listHDT;
 
     public List<HoaDonThuocDAO> getListHDT() {
@@ -41,6 +44,38 @@ public class ListHoaDonThuocDAO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    public String getSympton() {
+        return sympton;
+    }
+
+    public void setSympton(String sympton) {
+        this.sympton = sympton;
     }
 
     public Casher getCasherId() {
