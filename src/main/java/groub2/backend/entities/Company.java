@@ -4,7 +4,6 @@
  */
 package groub2.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -26,13 +25,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author DELL
  */
 @Entity
-@Table(name = "type_doctor")
+@Table(name = "company")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TypeDoctor.findAll", query = "SELECT t FROM TypeDoctor t"),
-    @NamedQuery(name = "TypeDoctor.findById", query = "SELECT t FROM TypeDoctor t WHERE t.id = :id"),
-    @NamedQuery(name = "TypeDoctor.findByName", query = "SELECT t FROM TypeDoctor t WHERE t.name = :name")})
-public class TypeDoctor implements Serializable {
+    @NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c"),
+    @NamedQuery(name = "Company.findById", query = "SELECT c FROM Company c WHERE c.id = :id"),
+    @NamedQuery(name = "Company.findByName", query = "SELECT c FROM Company c WHERE c.name = :name")})
+public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,20 +39,16 @@ public class TypeDoctor implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 150)
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "typeDoctorId")
-    @JsonIgnore
-    private Collection<Doctor> doctorCollection;
-    @OneToMany(mappedBy = "typeDoctorId")
-    @JsonIgnore
-    private Collection<Taophieukham> taophieukhamCollection;
+    @OneToMany(mappedBy = "companyId")
+    private Collection<Thuoc> thuocCollection;
 
-    public TypeDoctor() {
+    public Company() {
     }
 
-    public TypeDoctor(Integer id) {
+    public Company(Integer id) {
         this.id = id;
     }
 
@@ -74,21 +69,12 @@ public class TypeDoctor implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Doctor> getDoctorCollection() {
-        return doctorCollection;
+    public Collection<Thuoc> getThuocCollection() {
+        return thuocCollection;
     }
 
-    public void setDoctorCollection(Collection<Doctor> doctorCollection) {
-        this.doctorCollection = doctorCollection;
-    }
-
-    @XmlTransient
-    public Collection<Taophieukham> getTaophieukhamCollection() {
-        return taophieukhamCollection;
-    }
-
-    public void setTaophieukhamCollection(Collection<Taophieukham> taophieukhamCollection) {
-        this.taophieukhamCollection = taophieukhamCollection;
+    public void setThuocCollection(Collection<Thuoc> thuocCollection) {
+        this.thuocCollection = thuocCollection;
     }
 
     @Override
@@ -101,10 +87,10 @@ public class TypeDoctor implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TypeDoctor)) {
+        if (!(object instanceof Company)) {
             return false;
         }
-        TypeDoctor other = (TypeDoctor) object;
+        Company other = (Company) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -113,7 +99,7 @@ public class TypeDoctor implements Serializable {
 
     @Override
     public String toString() {
-        return "groub2.backend.entities.TypeDoctor[ id=" + id + " ]";
+        return "groub2.backend.entities.Company[ id=" + id + " ]";
     }
     
 }

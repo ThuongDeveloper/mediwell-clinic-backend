@@ -4,10 +4,6 @@
  */
 package groub2.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -25,8 +21,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -39,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Thuoc.findAll", query = "SELECT t FROM Thuoc t"),
     @NamedQuery(name = "Thuoc.findById", query = "SELECT t FROM Thuoc t WHERE t.id = :id"),
     @NamedQuery(name = "Thuoc.findByName", query = "SELECT t FROM Thuoc t WHERE t.name = :name"),
-    @NamedQuery(name = "Thuoc.findByCompanyName", query = "SELECT t FROM Thuoc t WHERE t.companyName = :companyName"),
     @NamedQuery(name = "Thuoc.findByComposition", query = "SELECT t FROM Thuoc t WHERE t.composition = :composition"),
     @NamedQuery(name = "Thuoc.findByQuantity", query = "SELECT t FROM Thuoc t WHERE t.quantity = :quantity"),
     @NamedQuery(name = "Thuoc.findByPrice", query = "SELECT t FROM Thuoc t WHERE t.price = :price"),
@@ -54,10 +51,10 @@ public class Thuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
-    @Column(name = "company_name")
-    private String companyName;
+    @Size(max = 250)
     @Column(name = "composition")
     private String composition;
     @Column(name = "quantity")
@@ -67,24 +64,34 @@ public class Thuoc implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    
+    
     @Column(name = "manufacturing_date")
+    //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     private Date manufacturingDate;
     @Column(name = "expiry_date")
+    //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     private Date expiryDate;
+    
+    
     @OneToMany(mappedBy = "thuocId")
-    @JsonIgnore
     private Collection<DonthuocDetails> donthuocDetailsCollection;
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @ManyToOne
+    private Company companyId;
+    @JoinColumn(name = "donvi_id", referencedColumnName = "id")
+    @ManyToOne
+    private Donvi donviId;
     @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
     @ManyToOne
     private Typethuoc typethuocId;
     @OneToMany(mappedBy = "thuocId")
-    @JsonIgnore
     private Collection<ToathuocDetails> toathuocDetailsCollection;
-    @JoinColumn(name = "donvi_id", referencedColumnName = "id")
-    @ManyToOne
-    private Donvi donviId;
+
     public Thuoc() {
     }
 
@@ -106,14 +113,6 @@ public class Thuoc implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getComposition() {
@@ -173,6 +172,22 @@ public class Thuoc implements Serializable {
         this.donthuocDetailsCollection = donthuocDetailsCollection;
     }
 
+    public Company getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Company companyId) {
+        this.companyId = companyId;
+    }
+
+    public Donvi getDonviId() {
+        return donviId;
+    }
+
+    public void setDonviId(Donvi donviId) {
+        this.donviId = donviId;
+    }
+
     public Typethuoc getTypethuocId() {
         return typethuocId;
     }
@@ -188,12 +203,6 @@ public class Thuoc implements Serializable {
 
     public void setToathuocDetailsCollection(Collection<ToathuocDetails> toathuocDetailsCollection) {
         this.toathuocDetailsCollection = toathuocDetailsCollection;
-    }
-    public Donvi getDonviId() {
-        return donviId;
-    }
-    public void setDonviId(Donvi donviId) {
-        this.donviId = donviId;
     }
 
     @Override

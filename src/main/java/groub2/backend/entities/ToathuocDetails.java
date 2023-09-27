@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,12 +42,16 @@ public class ToathuocDetails implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "sang")
     private String sang;
+    @Size(max = 250)
     @Column(name = "trua")
     private String trua;
+    @Size(max = 250)
     @Column(name = "chieu")
     private String chieu;
+    @Size(max = 250)
     @Column(name = "toi")
     private String toi;
     @Column(name = "quantity")

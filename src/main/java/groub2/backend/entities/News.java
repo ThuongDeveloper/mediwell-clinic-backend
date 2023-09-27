@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "News.findByTitle", query = "SELECT n FROM News n WHERE n.title = :title"),
     @NamedQuery(name = "News.findByContent", query = "SELECT n FROM News n WHERE n.content = :content"),
     @NamedQuery(name = "News.findByStatus", query = "SELECT n FROM News n WHERE n.status = :status"),
-    @NamedQuery(name = "News.findByCreateAt", query = "SELECT n FROM News n WHERE n.createAt = :createAt")})
+    @NamedQuery(name = "News.findByCreateAt", query = "SELECT n FROM News n WHERE n.createAt = :createAt"),
+    @NamedQuery(name = "News.findByImage", query = "SELECT n FROM News n WHERE n.image = :image")})
 public class News implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,11 +45,11 @@ public class News implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 250)
     @Column(name = "title")
     private String title;
-   
-    @Column(name = "banner")
-    private String banner;
+    @Size(max = 250)
     @Column(name = "content")
     private String content;
     @Column(name = "status")
@@ -54,8 +57,9 @@ public class News implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    
-    private String author;
+    @Size(max = 250)
+    @Column(name = "image")
+    private String image;
 
     public News() {
     }
@@ -109,23 +113,13 @@ public class News implements Serializable {
         this.createAt = createAt;
     }
 
-    public String getBanner() {
-        return banner;
+    public String getImage() {
+        return image;
     }
 
-    public void setBanner(String banner) {
-        this.banner = banner;
+    public void setImage(String image) {
+        this.image = image;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-    
-    
 
     @Override
     public int hashCode() {

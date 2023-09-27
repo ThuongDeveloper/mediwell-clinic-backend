@@ -34,25 +34,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
     @NamedQuery(name = "Patient.findById", query = "SELECT p FROM Patient p WHERE p.id = :id"),
-    @NamedQuery(name = "Patient.findByUsername", query = "SELECT p FROM Patient p WHERE p.username = :username"),
     @NamedQuery(name = "Patient.findByPassword", query = "SELECT p FROM Patient p WHERE p.password = :password"),
     @NamedQuery(name = "Patient.findByName", query = "SELECT p FROM Patient p WHERE p.name = :name"),
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
     @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image"),
     @NamedQuery(name = "Patient.findByRole", query = "SELECT p FROM Patient p WHERE p.role = :role"),
-    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image")})
-
+    @NamedQuery(name = "Patient.findByGender", query = "SELECT p FROM Patient p WHERE p.gender = :gender")})
 public class Patient implements Serializable {
-
-    @Column(name = "age")
-    @Temporal(TemporalType.DATE)
-    private Date age;
-    @Column(name = "gender")
-    private Boolean gender;
-    @Size(max = 50)
-    @Column(name = "role")
-    private String role;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,30 +50,41 @@ public class Patient implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "username")
-    private String username;
+    @Size(max = 250)
     @Column(name = "password")
     private String password;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "email")
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 50)
     @Column(name = "phone")
     private String phone;
-
+    @Size(max = 250)
     @Column(name = "image")
     private String image;
+    @Size(max = 50)
+    @Column(name = "role")
+    private String role;
+    @Column(name = "gender")
+    
+    private Boolean gender;
+    @Column(name = "dob")
+    @Temporal(TemporalType.DATE)
+    private Date dob;
     @OneToMany(mappedBy = "patientId")
     @JsonIgnore
     private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "patientId")
     @JsonIgnore
     private Collection<Appointment> appointmentCollection;
-    @OneToMany(mappedBy = "patientId")
-    @JsonIgnore
-    private Collection<Feedback> feedbackCollection;
 
     public Patient() {
     }
@@ -98,14 +99,6 @@ public class Patient implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -147,14 +140,6 @@ public class Patient implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getImage() {
         return image;
@@ -164,12 +149,12 @@ public class Patient implements Serializable {
         this.image = image;
     }
 
-    public Date getAge() {
-        return age;
+    public String getRole() {
+        return role;
     }
 
-    public void setAge(Date age) {
-        this.age = age;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Boolean getGender() {
@@ -196,15 +181,6 @@ public class Patient implements Serializable {
 
     public void setAppointmentCollection(Collection<Appointment> appointmentCollection) {
         this.appointmentCollection = appointmentCollection;
-    }
-
-    @XmlTransient
-    public Collection<Feedback> getFeedbackCollection() {
-        return feedbackCollection;
-    }
-
-    public void setFeedbackCollection(Collection<Feedback> feedbackCollection) {
-        this.feedbackCollection = feedbackCollection;
     }
 
     @Override

@@ -4,7 +4,6 @@
  */
 package groub2.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -22,9 +21,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.validation.constraints.Size;
+
 /**
  *
  * @author DELL
@@ -42,9 +42,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Doctor.findByAddress", query = "SELECT d FROM Doctor d WHERE d.address = :address"),
     @NamedQuery(name = "Doctor.findByGender", query = "SELECT d FROM Doctor d WHERE d.gender = :gender"),
     @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt"),
-    @NamedQuery(name = "Doctor.findByRole", query = "SELECT d FROM Doctor d WHERE d.role = :role"),
-    @NamedQuery(name = "Doctor.findByImage", query = "SELECT d FROM Doctor d WHERE d.image = :image")})
-
+    @NamedQuery(name = "Doctor.findByImage", query = "SELECT d FROM Doctor d WHERE d.image = :image"),
+    @NamedQuery(name = "Doctor.findByRole", query = "SELECT d FROM Doctor d WHERE d.role = :role")})
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,14 +52,20 @@ public class Doctor implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    @Size(max = 250)
     @Column(name = "username")
     private String username;
+    @Size(max = 250)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "email")
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
     @Column(name = "gender")
@@ -68,25 +73,22 @@ public class Doctor implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Size(max = 250)
+    @Column(name = "image")
+    private String image;
     @Size(max = 50)
     @Column(name = "role")
     private String role;
-    @Column(name = "image")
-    private String image;
     @OneToMany(mappedBy = "doctorId")
-    @JsonIgnore
     private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "doctorId")
-    @JsonIgnore
     private Collection<Appointment> appointmentCollection;
     @OneToMany(mappedBy = "doctorId")
-    @JsonIgnore
     private Collection<Lichlamviec> lichlamviecCollection;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
     @OneToMany(mappedBy = "doctorId")
-    @JsonIgnore
     private Collection<Toathuoc> toathuocCollection;
 
     public Doctor() {
@@ -159,13 +161,6 @@ public class Doctor implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
-      public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getImage() {
         return image;
@@ -173,6 +168,14 @@ public class Doctor implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @XmlTransient

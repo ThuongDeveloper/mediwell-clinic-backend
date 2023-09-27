@@ -4,7 +4,6 @@
  */
 package groub2.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -17,16 +16,22 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author DELL
+ */
 @Entity
 @Table(name = "donvi")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Donvi.findAll", query = "SELECT t FROM Donvi t"),
-        @NamedQuery(name = "Donvi.findById", query = "SELECT t FROM Donvi t WHERE t.id = :id"),
-        @NamedQuery(name = "Donvi.findByName", query = "SELECT t FROM Donvi t WHERE t.name = :name")})
+    @NamedQuery(name = "Donvi.findAll", query = "SELECT d FROM Donvi d"),
+    @NamedQuery(name = "Donvi.findById", query = "SELECT d FROM Donvi d WHERE d.id = :id"),
+    @NamedQuery(name = "Donvi.findByName", query = "SELECT d FROM Donvi d WHERE d.name = :name")})
 public class Donvi implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,10 +40,12 @@ public class Donvi implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 250)
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "donviId")
-    @JsonIgnore
     private Collection<Thuoc> thuocCollection;
 
     public Donvi() {
@@ -46,6 +53,11 @@ public class Donvi implements Serializable {
 
     public Donvi(Integer id) {
         this.id = id;
+    }
+
+    public Donvi(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -97,5 +109,5 @@ public class Donvi implements Serializable {
     public String toString() {
         return "groub2.backend.entities.Donvi[ id=" + id + " ]";
     }
-
+    
 }

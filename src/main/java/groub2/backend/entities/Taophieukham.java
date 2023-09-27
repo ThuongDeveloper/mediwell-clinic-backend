@@ -5,10 +5,26 @@
 package groub2.backend.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Length;
@@ -28,7 +44,10 @@ import org.hibernate.validator.constraints.Length;
     @NamedQuery(name = "Taophieukham.findByPhone", query = "SELECT t FROM Taophieukham t WHERE t.phone = :phone"),
     @NamedQuery(name = "Taophieukham.findByAddress", query = "SELECT t FROM Taophieukham t WHERE t.address = :address"),
     @NamedQuery(name = "Taophieukham.findByTotalMoney", query = "SELECT t FROM Taophieukham t WHERE t.totalMoney = :totalMoney"),
-    @NamedQuery(name = "Taophieukham.findByCreateAt", query = "SELECT t FROM Taophieukham t WHERE t.createAt = :createAt")})
+    @NamedQuery(name = "Taophieukham.findByCreateAt", query = "SELECT t FROM Taophieukham t WHERE t.createAt = :createAt"),
+    @NamedQuery(name = "Taophieukham.findByGender", query = "SELECT t FROM Taophieukham t WHERE t.gender = :gender"),
+    @NamedQuery(name = "Taophieukham.findByDob", query = "SELECT t FROM Taophieukham t WHERE t.dob = :dob"),
+    @NamedQuery(name = "Taophieukham.findBySympton", query = "SELECT t FROM Taophieukham t WHERE t.sympton = :sympton")})
 public class Taophieukham implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +56,7 @@ public class Taophieukham implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Column(name = "sothutu")
     @NotNull(message = "No. cannot be left blank!!!")
     private Integer sothutu;
@@ -54,19 +74,26 @@ public class Taophieukham implements Serializable {
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-    @OneToMany(mappedBy = "phieukhamId")
-    private List<Donthuoc> donthuocList;
+    
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "gender")
+    private Boolean gender;
+    @Column(name = "dob")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dob;
+    @Size(max = 250)
+    @Column(name = "sympton")
+    private String sympton;
+    @OneToMany(mappedBy = "taophieukhamId")
+    private Collection<Toathuoc> toathuocCollection;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
-//    @NotNull(message = "Casher Name cannot be left blank!!!")
     @ManyToOne
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
-//    @NotNull(message = "Type Doctor cannot be left blank!!!")
     @ManyToOne
     private TypeDoctor typeDoctorId;
 
@@ -85,6 +112,37 @@ public class Taophieukham implements Serializable {
         this.id = id;
     }
 
+    public Integer getSothutu() {
+        return sothutu;
+    }
+
+    public void setSothutu(Integer sothutu) {
+        this.sothutu = sothutu;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Integer getTotalMoney() {
         return totalMoney;
@@ -100,6 +158,39 @@ public class Taophieukham implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getSympton() {
+        return sympton;
+    }
+
+    public void setSympton(String sympton) {
+        this.sympton = sympton;
+    }
+
+    @XmlTransient
+    public Collection<Toathuoc> getToathuocCollection() {
+        return toathuocCollection;
+    }
+
+    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
+        this.toathuocCollection = toathuocCollection;
     }
 
     public Casher getCasherId() {
@@ -141,48 +232,6 @@ public class Taophieukham implements Serializable {
     @Override
     public String toString() {
         return "groub2.backend.entities.Taophieukham[ id=" + id + " ]";
-    }
-
-    public Integer getSothutu() {
-        return sothutu;
-    }
-
-    public void setSothutu(Integer sothutu) {
-        this.sothutu = sothutu;
-    }
-
-
-    @XmlTransient
-    public List<Donthuoc> getDonthuocList() {
-        return donthuocList;
-    }
-
-    public void setDonthuocList(List<Donthuoc> donthuocList) {
-        this.donthuocList = donthuocList;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
     
 }

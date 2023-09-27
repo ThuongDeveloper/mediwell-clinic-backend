@@ -4,7 +4,6 @@
  */
 package groub2.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -22,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,13 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Toathuoc.findAll", query = "SELECT t FROM Toathuoc t"),
     @NamedQuery(name = "Toathuoc.findById", query = "SELECT t FROM Toathuoc t WHERE t.id = :id"),
-    @NamedQuery(name = "Toathuoc.findByName", query = "SELECT t FROM Toathuoc t WHERE t.name = :name"),
-    @NamedQuery(name = "Toathuoc.findByPhone", query = "SELECT t FROM Toathuoc t WHERE t.phone = :phone"),
-    @NamedQuery(name = "Toathuoc.findByAddress", query = "SELECT t FROM Toathuoc t WHERE t.address = :address"),
-    @NamedQuery(name = "Toathuoc.findBySymptom", query = "SELECT t FROM Toathuoc t WHERE t.symptom = :symptom"),
-    @NamedQuery(name = "Toathuoc.findByDescription", query = "SELECT t FROM Toathuoc t WHERE t.description = :description"),
-    @NamedQuery(name = "Toathuoc.findByState", query = "SELECT t FROM Toathuoc t WHERE t.state = :state"),
-    @NamedQuery(name = "Toathuoc.findByCreateAt", query = "SELECT t FROM Toathuoc t WHERE t.createAt = :createAt")})
+    @NamedQuery(name = "Toathuoc.findByCreateAt", query = "SELECT t FROM Toathuoc t WHERE t.createAt = :createAt"),
+    @NamedQuery(name = "Toathuoc.findBySympton", query = "SELECT t FROM Toathuoc t WHERE t.sympton = :sympton"),
+    @NamedQuery(name = "Toathuoc.findByNgaytaikham", query = "SELECT t FROM Toathuoc t WHERE t.ngaytaikham = :ngaytaikham")})
 public class Toathuoc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,26 +46,24 @@ public class Toathuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "address")
-    private String address;
-    @Column(name = "symptom")
-    private String symptom;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "state")
-    private Boolean state;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Size(max = 250)
+    @Column(name = "sympton")
+    private String sympton;
+    @Column(name = "ngaytaikham")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ngaytaikham;
+    @OneToMany(mappedBy = "toathuocId")
+    private Collection<Donthuoc> donthuocCollection;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
+    @JoinColumn(name = "taophieukham_id", referencedColumnName = "id")
+    @ManyToOne
+    private Taophieukham taophieukhamId;
     @OneToMany(mappedBy = "toathuocId")
-    @JsonIgnore
     private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Toathuoc() {
@@ -87,54 +81,6 @@ public class Toathuoc implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getSymptom() {
-        return symptom;
-    }
-
-    public void setSymptom(String symptom) {
-        this.symptom = symptom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getState() {
-        return state;
-    }
-
-    public void setState(Boolean state) {
-        this.state = state;
-    }
-
     public Date getCreateAt() {
         return createAt;
     }
@@ -143,12 +89,45 @@ public class Toathuoc implements Serializable {
         this.createAt = createAt;
     }
 
+    public String getSympton() {
+        return sympton;
+    }
+
+    public void setSympton(String sympton) {
+        this.sympton = sympton;
+    }
+
+    public Date getNgaytaikham() {
+        return ngaytaikham;
+    }
+
+    public void setNgaytaikham(Date ngaytaikham) {
+        this.ngaytaikham = ngaytaikham;
+    }
+
+    @XmlTransient
+    public Collection<Donthuoc> getDonthuocCollection() {
+        return donthuocCollection;
+    }
+
+    public void setDonthuocCollection(Collection<Donthuoc> donthuocCollection) {
+        this.donthuocCollection = donthuocCollection;
+    }
+
     public Doctor getDoctorId() {
         return doctorId;
     }
 
     public void setDoctorId(Doctor doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public Taophieukham getTaophieukhamId() {
+        return taophieukhamId;
+    }
+
+    public void setTaophieukhamId(Taophieukham taophieukhamId) {
+        this.taophieukhamId = taophieukhamId;
     }
 
     @XmlTransient
