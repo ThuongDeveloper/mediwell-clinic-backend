@@ -4,6 +4,7 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -27,7 +28,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -83,15 +87,17 @@ public class Taophieukham implements Serializable {
     @Column(name = "gender")
     private Boolean gender;
     @Column(name = "dob")
-    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
     @Size(max = 250)
     @Column(name = "sympton")
     private String sympton;
     @OneToMany(mappedBy = "taophieukhamId")
+    @JsonIgnore
     private Collection<Toathuoc> toathuocCollection;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Casher casherId;
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne

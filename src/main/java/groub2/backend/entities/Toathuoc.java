@@ -4,6 +4,8 @@
  */
 package groub2.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -56,6 +58,7 @@ public class Toathuoc implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date ngaytaikham;
     @OneToMany(mappedBy = "toathuocId")
+    @JsonIgnore
     private Collection<Donthuoc> donthuocCollection;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
@@ -64,6 +67,7 @@ public class Toathuoc implements Serializable {
     @ManyToOne
     private Taophieukham taophieukhamId;
     @OneToMany(mappedBy = "toathuocId")
+    @JsonIgnore
     private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Toathuoc() {
