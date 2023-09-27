@@ -13,6 +13,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> 6e241fa24707c1be31bf764598d2bd859e9f8906
     boolean existsByEmail(String email);
 
     Patient findByEmail(String email);
