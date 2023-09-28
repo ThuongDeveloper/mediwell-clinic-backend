@@ -197,6 +197,12 @@ public class DonthuocController {
         contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
         contentStream.showText("Patient Name: " + donthuoc.getToathuocId().getTaophieukhamId().getName());
         contentStream.newLineAtOffset(0, -20);
+        if (donthuoc.getToathuocId().getTaophieukhamId().getGender() == true) {
+        contentStream.showText("Gender: " + "Male");
+        } else {
+        contentStream.showText("Gender: " + "Female");
+        }
+        contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Phone: " + donthuoc.getToathuocId().getTaophieukhamId().getPhone());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Address: " + donthuoc.getToathuocId().getTaophieukhamId().getAddress());
