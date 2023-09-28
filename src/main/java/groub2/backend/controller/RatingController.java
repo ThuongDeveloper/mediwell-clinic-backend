@@ -9,6 +9,10 @@ import groub2.backend.dto.listToathuocDAO;
 import groub2.backend.entities.Rating;
 import groub2.backend.entities.Toathuoc;
 import groub2.backend.service.RatingService;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -90,5 +94,28 @@ public class RatingController {
         
         ratingService.deleteRating(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/filter/startdate={startDate}&enddate={endDate}")
+    public ResponseEntity<List<Rating>> listRating(@PathVariable String startDate,@PathVariable String endDate) {
+    List<Rating> ratings= new ArrayList<>();
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng 
+        
+        if(startDate.equals("") && endDate.equals("")){
+             ratings = ratingService.findAll();
+            return new ResponseEntity<>(ratings, HttpStatus.OK);
+        }
+        try {
+            Date dateStart = dateFormat.parse(startDate); 
+        Date dateEnd = dateFormat.parse(endDate);
+         ratings = ratingService.filterRatingByDate(dateStart, dateEnd);
+        } catch (Exception e) {
+             return new ResponseEntity<>(ratings, HttpStatus.NOT_FOUND);
+        }
+        
+           
+      
+        return  new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 }

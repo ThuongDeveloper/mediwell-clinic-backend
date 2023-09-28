@@ -86,7 +86,10 @@ public class DonthuocController {
 //        newDonThuoc.getToathuocId().getTaophieukhamId().setSympton(listHoaDonThuocDAO.getSympton());
         newDonThuoc.setTotalMoney(totalmoney);
         newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
-        newDonThuoc.setToathuocId(listHoaDonThuocDAO.getToathuocId());
+//        newDonThuoc.setToathuocId(listHoaDonThuocDAO.getToathuocId());
+
+      
+
 
         var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
 

@@ -7,6 +7,7 @@ package groub2.backend.service;
 import groub2.backend.entities.Appointment;
 import groub2.backend.entities.Patient;
 import groub2.backend.res.AppointmentRepository;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,5 +80,9 @@ public class AppointmentService {
     
         public List<Appointment> getAllByPatientId(Patient id) {
         return res.findByPatientId(id);
+    }
+        
+          public List<Appointment> getAppointmentByDate(Date startDate,Date endDate) {
+        return res.findAppointmentByDate(startDate,endDate);
     }
 }
