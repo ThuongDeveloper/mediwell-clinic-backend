@@ -233,7 +233,7 @@ public class TaophieukhamController {
         contentStream.newLineAtOffset(column2X - marginX, 0);
         contentStream.showText(typeDoctor.getName());
         contentStream.newLineAtOffset(column3X - column2X, 0);
-        contentStream.showText(taophieukham.getTotalMoney().toString());
+        contentStream.showText(taophieukham.getTotalMoney().toString() + "$");
         contentStream.endText();
         tableY -= rowHeight * 2;
 
