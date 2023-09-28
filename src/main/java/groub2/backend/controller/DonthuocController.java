@@ -212,7 +212,7 @@ public class DonthuocController {
         contentStream.endText();
 
         float marginX = 50;
-        float tableY = page.getMediaBox().getHeight() - 150;
+        float tableY = page.getMediaBox().getHeight() - 170;
         float rowHeight = 20;
         float tableWidth = page.getMediaBox().getWidth() - 2 * marginX;
 
