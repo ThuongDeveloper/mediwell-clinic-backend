@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -77,7 +78,7 @@ public class Patient implements Serializable {
     
     private Boolean gender;
     @Column(name = "dob")
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
     @OneToMany(mappedBy = "patientId")
     @JsonIgnore

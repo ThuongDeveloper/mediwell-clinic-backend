@@ -109,21 +109,20 @@ public class DonthuocController {
     }
 
     @GetMapping("/export-pdf")
-    public ResponseEntity<byte[]> exportPrescriptionToPDF(@RequestParam("donthuocId") int donthuocId, @RequestParam("phieukhamId") int phieukhamId) {
-        if (donthuocId <= 0 || phieukhamId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid donthuocId AND phieukhamId".getBytes());
+    public ResponseEntity<byte[]> exportPrescriptionToPDF(@RequestParam("donthuocId") int donthuocId) {
+        if (donthuocId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid donthuocId".getBytes());
         }
 
         // Kiểm tra xem toathuocId có tồn tại trong cơ sở dữ liệu không
         Donthuoc donthuoc = donthuocService.getDonThuocId(donthuocId);
-        Taophieukham taophieukham = Tservice.getTaophieukhamById(phieukhamId);
-        if (donthuoc == null || taophieukham == null) {
+        if (donthuoc == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dơn Thuoc AND Phieu Kham not found".getBytes());
         }
 
         try {
             // Tạo tài liệu PDF và export dữ liệu vào đó
-            byte[] pdfBytes = createAndExportPDF(donthuoc, taophieukham);
+            byte[] pdfBytes = createAndExportPDF(donthuoc);
 
             // Thiết lập header và trả về file PDF
             HttpHeaders headers = new HttpHeaders();
@@ -141,7 +140,7 @@ public class DonthuocController {
         }
     }
 
-    private byte[] createAndExportPDF(Donthuoc donthuoc, Taophieukham taophieukham) throws IOException {
+    private byte[] createAndExportPDF(Donthuoc donthuoc) throws IOException {
         // Tạo một tài liệu PDF mới
         PDDocument document = new PDDocument();
 
@@ -198,11 +197,24 @@ public class DonthuocController {
         contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
         contentStream.showText("Patient Name: " + donthuoc.getToathuocId().getTaophieukhamId().getName());
         contentStream.newLineAtOffset(0, -20);
+        if (donthuoc.getToathuocId().getTaophieukhamId().getGender() == true) {
+        contentStream.showText("Gender: " + "Male");
+        } else {
+        contentStream.showText("Gender: " + "Female");
+        }
+        contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Phone: " + donthuoc.getToathuocId().getTaophieukhamId().getPhone());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Address: " + donthuoc.getToathuocId().getTaophieukhamId().getAddress());
+        
+        contentStream.newLineAtOffset(320, 42); // Thay đổi tọa độ x và y tùy theo cần thiết
+
+        contentStream.showText("Doctor Name: " + donthuoc.getToathuocId().getDoctorId().getName());
         contentStream.newLineAtOffset(0, -20);
-        contentStream.showText("Type of Disease: " + taophieukham.getTypeDoctorId().getName());
+        contentStream.showText("Type of Disease: " + donthuoc.getToathuocId().getTaophieukhamId().getTypeDoctorId().getName());
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Symptoms: " + donthuoc.getToathuocId().getSympton());
+        contentStream.newLineAtOffset(0, -20);
         contentStream.endText();
 
         float marginX = 50;

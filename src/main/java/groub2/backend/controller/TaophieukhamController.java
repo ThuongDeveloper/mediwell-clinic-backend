@@ -187,6 +187,12 @@ public class TaophieukhamController {
         contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
         contentStream.showText("Patient Name: " + taophieukham.getName());
         contentStream.newLineAtOffset(0, -20);
+        if (taophieukham.getGender() == true) {
+        contentStream.showText("Gender: " + "Male");
+        } else {
+        contentStream.showText("Gender: " + "Female");
+        }
+        contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Phone: " + taophieukham.getPhone());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Address: " + taophieukham.getAddress());
@@ -233,7 +239,7 @@ public class TaophieukhamController {
         contentStream.newLineAtOffset(column2X - marginX, 0);
         contentStream.showText(typeDoctor.getName());
         contentStream.newLineAtOffset(column3X - column2X, 0);
-        contentStream.showText(taophieukham.getTotalMoney().toString());
+        contentStream.showText(taophieukham.getTotalMoney().toString() + "$");
         contentStream.endText();
         tableY -= rowHeight * 2;
 
