@@ -16,6 +16,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import groub2.backend.entities.Doctor;
+import groub2.backend.entities.News;
 import groub2.backend.entities.Patient;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,6 +136,43 @@ public class FirebaseImageService implements IImageService {
 
         //Khi đã up lên xong thì thay đổi URL
         storagePath = "patients%2F" + patient.getId()+ "%2F" + file.getOriginalFilename();
+
+        String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "projecthk4chap2.appspot.com" + "/o/" + storagePath + "?alt=media";
+
+        return urlIMAGE;
+    }
+    
+     public String uploadImageNews(News news, MultipartFile file) throws IOException {
+
+        FileInputStream serviceAccount
+                = new FileInputStream("./serviceAccount.json");
+
+        var uuid = UUID.randomUUID();
+
+        Storage storage = StorageOptions.newBuilder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build()
+                .getService();
+
+        String contentType = file.getContentType();
+        // Define the destination path in Firebase Storage
+        String storagePath = "news/" + news.getId()+ "/" + file.getOriginalFilename();
+        //String storagePath =file.getOriginalFilename();
+
+        // Convert MultipartFile to byte array
+        byte[] fileBytes = file.getBytes();
+
+        // Upload the file to Firebase Storage
+        BlobId blobId = BlobId.of("projecthk4chap2.appspot.com", storagePath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
+        Blob blob = storage.create(blobInfo, fileBytes);
+
+        // Generate a signed URL that never expires
+        SignUrlOption signUrlOption = SignUrlOption.withV4Signature();
+        URL signedUrl = blob.signUrl(7, TimeUnit.DAYS, signUrlOption);
+
+        //Khi đã up lên xong thì thay đổi URL
+        storagePath = "news%2F" + news.getId()+ "%2F" + file.getOriginalFilename();
 
         String urlIMAGE = "https://firebasestorage.googleapis.com/v0/b/" + "projecthk4chap2.appspot.com" + "/o/" + storagePath + "?alt=media";
 

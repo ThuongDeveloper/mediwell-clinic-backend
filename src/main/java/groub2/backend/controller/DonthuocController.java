@@ -68,7 +68,7 @@ public class DonthuocController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity addCasher(@RequestBody ListHoaDonThuocDAO listHoaDonThuocDAO) {
+    public ResponseEntity addMI(@RequestBody ListHoaDonThuocDAO listHoaDonThuocDAO) {
 
         int totalmoney = 0;
         var listobj = listHoaDonThuocDAO.getListHDT();
@@ -78,14 +78,18 @@ public class DonthuocController {
 
         Donthuoc newDonThuoc = new Donthuoc();
         newDonThuoc.setCreateAt(new Date());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setName(listHoaDonThuocDAO.getName());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setPhone(listHoaDonThuocDAO.getPhone());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setAddress(listHoaDonThuocDAO.getAddress());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setDob(listHoaDonThuocDAO.getDob());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setGender(listHoaDonThuocDAO.getGender());
-        newDonThuoc.getToathuocId().getTaophieukhamId().setSympton(listHoaDonThuocDAO.getSympton());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setName(listHoaDonThuocDAO.getName());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setPhone(listHoaDonThuocDAO.getPhone());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setAddress(listHoaDonThuocDAO.getAddress());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setDob(listHoaDonThuocDAO.getDob());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setGender(listHoaDonThuocDAO.getGender());
+//        newDonThuoc.getToathuocId().getTaophieukhamId().setSympton(listHoaDonThuocDAO.getSympton());
         newDonThuoc.setTotalMoney(totalmoney);
         newDonThuoc.setCasherId(listHoaDonThuocDAO.getCasherId());
+//        newDonThuoc.setToathuocId(listHoaDonThuocDAO.getToathuocId());
+
+      
+
 
         var modelDonthuoc = donthuocService.saveDonthuoc(newDonThuoc);
 
