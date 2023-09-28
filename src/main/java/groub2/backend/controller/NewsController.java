@@ -41,7 +41,7 @@ public class NewsController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<News> listNews() {
-        return newsService.findAll();
+            return newsService.findAll();
     }
 
     @GetMapping("/{id}")
