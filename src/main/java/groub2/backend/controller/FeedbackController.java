@@ -6,7 +6,9 @@ package groub2.backend.controller;
 
 import groub2.backend.dto.FeedbackDAO;
 import groub2.backend.entities.Feedback;
+import groub2.backend.res.FeedbackRepository;
 import groub2.backend.service.FeedbackService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
+    
+    @Autowired
+    FeedbackRepository resFeedbackRepository;
    
 
     @GetMapping()
@@ -57,8 +62,9 @@ public class FeedbackController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Feedback> addFeedback(@RequestBody FeedbackDAO feedbackDAO) {
-        Feedback feedback = feedbackService.addFeedback(feedbackDAO);
+    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
+        feedback.setCreateAt(new Date());
+        resFeedbackRepository.save(feedback);
         return new ResponseEntity<>(feedback, HttpStatus.OK);
     }
 

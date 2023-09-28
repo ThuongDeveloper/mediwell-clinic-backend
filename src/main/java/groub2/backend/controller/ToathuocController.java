@@ -168,21 +168,29 @@ public class ToathuocController {
         contentStream.newLineAtOffset((page.getMediaBox().getWidth() / 2) - 50, page.getMediaBox().getHeight() - 50);
         contentStream.showText("PRESCRIPTION");
         contentStream.endText();
-
+String datedob = dateFormat.format(toathuoc.getTaophieukhamId().getDob());
         // Thêm thông tin bệnh nhân
         contentStream.setFont(font, 10);
         contentStream.beginText();
-        contentStream.newLineAtOffset(50, page.getMediaBox().getHeight() - 80);
+        float infoY = page.getMediaBox().getHeight() - 80;
+        contentStream.newLineAtOffset(50, infoY);
         contentStream.showText("Patient Name: " + toathuoc.getTaophieukhamId().getName());
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Date of Birth: " + datedob);
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Gender: " + (toathuoc.getTaophieukhamId().getGender() ? "Male" : "Female"));
+        contentStream.newLineAtOffset(0, -20);
+        contentStream.showText("Phone Number: " + toathuoc.getTaophieukhamId().getPhone());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Address: " + toathuoc.getTaophieukhamId().getAddress());
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("Symptoms: " + toathuoc.getTaophieukhamId().getSympton());
+
         contentStream.endText();
 
         // Thêm đơn thuốc chi tiết
         float marginX = 50;
-        float tableY = page.getMediaBox().getHeight() - 170;
+        float tableY = infoY - 150; // Dịch xuống dưới thông tin bệnh nhân
         float rowHeight = 20;
         float tableWidth = page.getMediaBox().getWidth() - 2 * marginX;
 
@@ -204,11 +212,13 @@ public class ToathuocController {
         contentStream.showText("Medicine Name");
 
         // Tính toán khoảng cách đến lề trái của các cột
-        float column2X = marginX + 120; // Cột thứ 2
+        float column2X = marginX + 160; // Cột thứ 2
         float column3X = column2X + 60; // Cột thứ 3
         float column4X = column3X + 60; // Cột thứ 4
         float column5X = column4X + 60; // Cột thứ 5
         float column6X = column5X + 60; // Cột thứ 6
+        float column7X = column6X + 60; // Cột thứ 7
+        float column8X = column7X + 60; // Cột thứ 8
 
         contentStream.newLineAtOffset(column2X - marginX, 0);
         contentStream.showText("Morning");
@@ -220,6 +230,8 @@ public class ToathuocController {
         contentStream.showText("Evening");
         contentStream.newLineAtOffset(column6X - column5X, 0);
         contentStream.showText("Quantity");
+        contentStream.newLineAtOffset(column7X - column6X, 0);
+        contentStream.showText("Unit");
 
         contentStream.endText();
 
@@ -244,15 +256,17 @@ public class ToathuocController {
             contentStream.showText(detail.getToi());
             contentStream.newLineAtOffset(column6X - column5X, 0);
             contentStream.showText(detail.getQuantity().toString());
+            contentStream.newLineAtOffset(column7X - column6X, 0);
+            contentStream.showText(detail.getThuocId().getDonviId().getName());
             contentStream.endText();
             tableY -= rowHeight * 2;
         }
-
-        // Thêm chữ ký bác sĩ (dưới thông tin đơn thuốc chi tiết)
+// Thêm chữ ký bác sĩ (bên phải dưới thông tin đơn thuốc chi tiết)
         String doctorSignature = toathuoc.getDoctorId().getName();
         contentStream.setFont(font, 10);
         contentStream.beginText();
-        contentStream.newLineAtOffset(marginX, tableY - 30);
+        float signatureX = page.getMediaBox().getWidth() - 250;
+        contentStream.newLineAtOffset(signatureX, tableY - 30);
         contentStream.showText("Doctor's Signature: " + doctorSignature);
         contentStream.endText();
 
@@ -265,6 +279,16 @@ public class ToathuocController {
         contentStream.beginText();
         contentStream.newLineAtOffset(marginX, tableY - 50);
         contentStream.showText("Date Created: " + creationDateString);
+        contentStream.endText();
+
+        SimpleDateFormat creationDateFormat2 = new SimpleDateFormat("dd/MM/yyyy");
+        Date ngaytaikhamdate = toathuoc.getNgaytaikham();
+        String creationDateString2 = creationDateFormat.format(ngaytaikhamdate);
+
+        contentStream.setFont(font, 10);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(marginX, tableY - 70);
+        contentStream.showText("Next Appointment Date: " + creationDateString2);
         contentStream.endText();
 
         // Đóng luồng nội dung
